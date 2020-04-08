@@ -1,0 +1,87 @@
+// **RECUERDA** PRIORIDAD EN FUNCI�N DEL ORDEN DE LAS REGLAS (LA SUPERIOR LA M�S PRIORITARIA)
+
+
+// Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
+
+/*
+rule prioridad1 {
+  declarations
+    practica.objetos.Herramienta h1;
+    practica.objetos.Trabajador t1;
+  preconditions
+    !h1.getNombre().equals("");
+    t1.getStatus().equals("libre");		
+  actions
+ 	h1.setNombre("FIN");
+ 	
+ 	// no se incluye "modified" para forzar que finalice la ejecuci�n
+ 	
+ 	
+}
+
+rule fin{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
+	declarations
+    practica.objetos.Tarea tarea1;
+  preconditions
+    !tarea1.getUnidades() > 0; // NO quedan tareas pendientes
+  actions
+  	true;
+}
+*/
+
+
+rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta necesaria
+	declarations
+    practica.objetos.Tarea tarea1;
+    practica.objetos.Trabajador t1;
+  preconditions
+    tarea1.getUnidades() > 0; 		// tarea pendiente 
+    t1.getTiempoOcupado() == 0; // trabajador libre
+    t1.getHerramienta().equals(tarea1.getTipo());
+  actions
+ 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades()); // trabajador ocupado el tiempo que requiera la tarea
+ 	t1.setArea(tarea1.getArea()); // le mando al area de la tarea
+ 	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
+	tarea1.setUnidades(0);
+	modified(tarea1);
+}
+
+rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
+	declarations
+    practica.objetos.Tarea tarea1;
+    practica.objetos.Trabajador t1;
+  preconditions
+    tarea1.getUnidades() > 0; 		// tarea pendiente 
+    t1.getTiempoOcupado() == 0; // trabajador libre
+    !t1.getHerramienta().equals(tarea1.getTipo()); // esta libre pero necesita otra herramienta para esa tarea
+  actions
+ 	t1.cogerHerramienta(tarea1.getTipo()); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
+ 	modified(t1);
+}
+
+rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
+	declarations
+    practica.objetos.Trabajador t1;
+    practica.objetos.Trabajador t2;
+    practica.objetos.Trabajador t3;
+    practica.objetos.Trabajador t4;
+  preconditions
+    t1.getTiempoOcupado() > 0; // TODOS OCUPADOS, hallo el que termina primero (t1)
+	t1.getTiempoOcupado() <= t2.getTiempoOcupado();
+	t1.getTiempoOcupado() <= t3.getTiempoOcupado();
+	t1.getTiempoOcupado() <= t4.getTiempoOcupado();
+  actions
+ 	t1.disminuirTiempoOcupado(t1.getTiempoOcupado());
+ 	t2.disminuirTiempoOcupado(t1.getTiempoOcupado());
+ 	t3.disminuirTiempoOcupado(t1.getTiempoOcupado());
+ 	t4.disminuirTiempoOcupado(t1.getTiempoOcupado());
+	modified(t1);
+	modified(t2);
+	modified(t3);
+	modified(t4);
+}
+
+
+
+
+
