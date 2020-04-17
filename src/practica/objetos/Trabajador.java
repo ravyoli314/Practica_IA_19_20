@@ -65,6 +65,11 @@ public class Trabajador {
 	public int getTiempoOcupado() {
 		return tiempoOcupado;
 	}
+	
+	public void setTiempoOcupado(int t) {
+		this.tiempoOcupado = t;
+	}
+	
 	public String getHerramienta () {
 		return herramienta;
 	}
@@ -77,6 +82,7 @@ public class Trabajador {
 	}
 	public void setArea(String areaTarea) {
 		this.area = areaTarea;
+		System.out.println(this.nombre + " con tiempo de ocupacion  " + this.tiempoOcupado + " se mueve a " + this.area);
 	}
 	
 	
@@ -85,7 +91,11 @@ public class Trabajador {
 	}
 	
 	public void disminuirTiempoOcupado(int tiempo) {
-		this.tiempoOcupado -= tiempo;
+		if(tiempo > this.tiempoOcupado) {
+			this.tiempoOcupado = 0;
+		}
+		else this.tiempoOcupado -= tiempo;
+		System.out.println("Tiempo de " + this.nombre + " disminuido a " + tiempoOcupado);
 	}
 	
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) {
@@ -103,8 +113,10 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-		
+		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA
+		//  calcularTiempoTrayecto(String origen, String destino) 
 		this.tiempoOcupado += tiempoOcupado;
+		System.out.println("Tiempo de " + this.nombre + " con tarea  " + tipoTarea + " ahora es " + tiempoOcupado);
 	}
 	
 	public void cogerHerramienta(String tarea) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
@@ -113,7 +125,7 @@ public class Trabajador {
 			this.area = "A";
 		}
 		this.herramienta = tarea;	
-		
+		System.out.println(this.nombre + " con tiempo de ocupacion  " + this.tiempoOcupado + " coge herramienta " + this.herramienta);
 	}
 	
 	public int calcularTiempoTrayecto(String origen, String destino) { // HALLAR EL CAMINO MÁS CORTO!! AMPLITUD O PROFUNDIDAD??
