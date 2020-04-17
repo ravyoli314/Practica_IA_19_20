@@ -82,7 +82,6 @@ public class Trabajador {
 	}
 	public void setArea(String areaTarea) {
 		this.area = areaTarea;
-		System.out.println(this.nombre + " con tiempo de ocupacion  " + this.tiempoOcupado + " se mueve a " + this.area);
 	}
 	
 	
@@ -95,20 +94,19 @@ public class Trabajador {
 			this.tiempoOcupado = 0;
 		}
 		else this.tiempoOcupado -= tiempo;
-		System.out.println("Tiempo de " + this.nombre + " disminuido a " + tiempoOcupado);
 	}
 	
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) {
 		int tiempoOcupado;
 		switch(tipoTarea) {
 		case "podar":
-			tiempoOcupado= (unidadesTrabajo / getHabPodar()) * 60;
+			tiempoOcupado= (unidadesTrabajo * 60) / getHabPodar();
 			break;
 		case "limpiar":
-			tiempoOcupado= (unidadesTrabajo / getHabLimpiar()) * 60 ;
+			tiempoOcupado= (unidadesTrabajo * 60 )/ getHabLimpiar();
 			break;
 		case "reparar":
-			tiempoOcupado= (unidadesTrabajo / getHabReparar()) * 60;
+			tiempoOcupado= (unidadesTrabajo * 60 ) / getHabReparar();
 			break;
 		default:
 			tiempoOcupado = 0;
@@ -116,7 +114,6 @@ public class Trabajador {
 		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA
 		//  calcularTiempoTrayecto(String origen, String destino) 
 		this.tiempoOcupado += tiempoOcupado;
-		System.out.println("Tiempo de " + this.nombre + " con tarea  " + tipoTarea + " ahora es " + tiempoOcupado);
 	}
 	
 	public void cogerHerramienta(String tarea) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
@@ -125,12 +122,15 @@ public class Trabajador {
 			this.area = "A";
 		}
 		this.herramienta = tarea;	
-		System.out.println(this.nombre + " con tiempo de ocupacion  " + this.tiempoOcupado + " coge herramienta " + this.herramienta);
 	}
 	
 	public int calcularTiempoTrayecto(String origen, String destino) { // HALLAR EL CAMINO MÁS CORTO!! AMPLITUD O PROFUNDIDAD??
 		// if adyacentes return 5, else => desplazarme 1 (RECURSIVIDAD??)
 		return 5; // por ej hasta que lo complete
+	}
+	
+	public void printTrabajador() {
+		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta + " " + this.area);
 	}
 	
 	
