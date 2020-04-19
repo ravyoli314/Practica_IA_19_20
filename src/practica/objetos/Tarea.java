@@ -1,10 +1,10 @@
 package practica.objetos;
 
 /**
- * Clase creada como objeto base para la prï¿½ctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
+ * Clase creada como objeto base para la práctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
  *
  * @author Daniel Amigo Herrero
- * @author David Sï¿½nchez Pedroche
+ * @author David Sánchez Pedroche
  */
 
 public class Tarea {
@@ -13,7 +13,8 @@ public class Tarea {
 	String tipo;
 	String area;
 	int unidades;
-	// Aï¿½ADIR LAS VARIABLES NECESARIAS
+	// AÑADIR LAS VARIABLES NECESARIAS
+
 
 	/**
 	 * Constructor para el objeto
@@ -23,13 +24,13 @@ public class Tarea {
 		this.tipo = tipo;
 		this.area = area;
 		this.unidades = unidades;
-		// Aï¿½adir el estado inicial (estï¿½tico) de las variables que se aï¿½adan
-		// Si se necesita aï¿½adir valores variables, como un ID, utilizar setters
+		// Añadir el estado inicial (estático) de las variables que se añadan
+		// Si se necesita añadir valores variables, como un ID, utilizar setters
 	}
 	
-	// Mï¿½todos getters y setters
+	// Métodos getters y setters
 	/**
-	 * Aï¿½adir (si procede) mï¿½todos auxiliares, como getters o setters
+	 * Añadir (si procede) métodos auxiliares, como getters o setters
 	 */
 	public String getTipo() {
 		return tipo;
@@ -50,7 +51,7 @@ public class Tarea {
 		this.unidades = unidades;
 	}
 
-
+	
 
 
 

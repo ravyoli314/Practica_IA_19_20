@@ -107,4 +107,3 @@ rule tareasTerminadas {
 		t4.printTrabajador();
   		
 }
-

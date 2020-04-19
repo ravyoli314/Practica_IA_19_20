@@ -3,47 +3,6 @@
 
 // Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
 
-/*
-rule prioridad1 {
-  declarations
-    practica.objetos.Herramienta h1;
-    practica.objetos.Trabajador t1;
-  preconditions
-    !h1.getNombre().equals("");
-    t1.getStatus().equals("libre");		
-  actions
- 	h1.setNombre("FIN");
- 	
- 	// no se incluye "modified" para forzar que finalice la ejecuci�n
- 	
- 	
-}
-
-rule fin{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
-	declarations
-    practica.objetos.Tarea tarea1;
-    practica.objetos.Tarea trabajador1;
-  preconditions
-    !tarea1.getUnidades() > 0; // NO quedan tareas pendientes
-    !trabajador1.getTiempoOcupado() > 0; // NO quedan trabajadores ocupados
-  actions
-  	true;
-}
-*/
-
-/* rule tareasTerminadas{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
-	declarations
-    practica.objetos.Tarea tarea1;
-    practica.objetos.Trabajador t1;
-  preconditions
-    !tarea1.getUnidades() > 0; // NO quedan tareas pendientes
-    !t1.getArea().equals("A") || !t1.getHerramienta().equals("") ||  t1.getTiempoOcupado() > 0; 
-  actions
-  	t1.setArea("A");
-  	t1.setHerramienta("");
-  	t1.setTiempoOcupado(0);
-  	modified(t1);	
-} */
 
 rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta necesaria
 	declarations
@@ -52,9 +11,9 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
     t1.getTiempoOcupado() == 0; // trabajador libre
-    t1.getHerramienta().equals(tarea1.getTipo());
+    t1.getHerramienta().equals(tarea1.getTipo()); 
   actions
- 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades()); // trabajador ocupado el tiempo que requiera la tarea
+ 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades(), t1.getArea(), tarea1.getArea()); // trabajador ocupado el tiempo que requiera la tarea
  	t1.setArea(tarea1.getArea()); // le mando al area de la tarea
  	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
 	tarea1.setUnidades(0);
@@ -98,17 +57,53 @@ rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del
  	t3.disminuirTiempoOcupado(t1.getTiempoOcupado());
  	t4.disminuirTiempoOcupado(t1.getTiempoOcupado());
  	t1.disminuirTiempoOcupado(t1.getTiempoOcupado());
+ 	modified(t1);
  	modified(t2);
 	modified(t3);
 	modified(t4);
-	modified(t1);
 	t1.printTrabajador();
 	t2.printTrabajador();
 	t3.printTrabajador();
 	t4.printTrabajador();
 }
 
-
-
-
-
+rule tareasTerminadas {
+	declarations
+    	practica.objetos.Tarea tarea1;
+    	practica.objetos.Trabajador t1;
+    	practica.objetos.Trabajador t2;
+    	practica.objetos.Trabajador t3;
+    	practica.objetos.Trabajador t4;
+    preconditions
+    	!t1.getNombre().equals(t2.getNombre());
+  		!t1.getNombre().equals(t3.getNombre());
+  		!t1.getNombre().equals(t4.getNombre());
+  		!t2.getNombre().equals(t3.getNombre());
+  		!t2.getNombre().equals(t4.getNombre());
+  		!t3.getNombre().equals(t4.getNombre());
+    	tarea1.getUnidades() == 0; // NO quedan tareas pendientes
+    	t1.getTiempoOcupado() == 0; // trabajador libre
+    	!t1.getArea().equals("A");
+   	actions
+   		t1.setArea("A");
+  		t1.setHerramienta("");
+  		t1.setTiempoOcupado(0);
+  		modified(t1);
+  		t2.setArea("A");
+  		t2.setHerramienta("");
+  		t2.setTiempoOcupado(0);
+  		modified(t1);
+  		t3.setArea("A");
+  		t3.setHerramienta("");
+  		t3.setTiempoOcupado(0);
+  		modified(t3);
+  		t4.setArea("A");
+  		t4.setHerramienta("");
+  		t4.setTiempoOcupado(0);
+  		modified(t4);
+  		t1.printTrabajador();
+		t2.printTrabajador();
+		t3.printTrabajador();
+		t4.printTrabajador();
+  		
+}

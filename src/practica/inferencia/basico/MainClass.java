@@ -55,7 +55,7 @@ public class MainClass {
 		//----------------------------- Se preparan los objetos a utilizar en esta solución básica -----------------------------//
 		// Se pueden añadir variables extra iterando sobre cada array y añadiendo un set en cada objeto
 		// Herramientas
-		ArrayList<Herramienta> herramientas = readedHerramientas;		
+		ArrayList<Herramienta> herramientas = readedHerramientas;
 		// Trabajadores
 		ArrayList<Trabajador>  trabajadores = readedTrabajadores;
 		// Tareas
@@ -78,7 +78,7 @@ public class MainClass {
 		for (int i = 0; i < herramientas.size(); i++) kb.join(herramientas.get(i));
 		for (int i = 0; i < trabajadores.size(); i++) kb.join(trabajadores.get(i));
 		for (int i = 0; i < tareas.size(); i++) kb.join(tareas.get(i));
-		
+
 		// Impresión del estado final del problema		
 		System.out.println("--------------------------------------------------------");
 		System.out.println("****************** COMIENZO EJECUCION ******************");
