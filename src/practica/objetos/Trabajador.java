@@ -61,11 +61,7 @@ public class Trabajador {
 	}
 	public void setHabReparar(int habReparar) {
 		this.habReparar = habReparar;
-	}
-	public int getTiempoOcupado() {
-		return tiempoOcupado;
-	}
-	
+	}	
 	public void setTiempoOcupado(int t) {
 		this.tiempoOcupado = t;
 	}
@@ -84,9 +80,8 @@ public class Trabajador {
 		this.area = areaTarea;
 	}
 	
-	
-	public void aumentarTiempoOcupado(int tiempo) { // igual no hace falta
-		this.tiempoOcupado += tiempo;
+	public int getTiempoOcupado() {
+		return tiempoOcupado;
 	}
 	
 	public void disminuirTiempoOcupado(int tiempo) {
@@ -96,7 +91,7 @@ public class Trabajador {
 		else this.tiempoOcupado -= tiempo;
 	}
 	
-	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) {
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, String origen, String destino) {
 		int tiempoOcupado;
 		switch(tipoTarea) {
 		case "podar":
@@ -111,23 +106,71 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA
-		//  calcularTiempoTrayecto(String origen, String destino) 
-		this.tiempoOcupado += tiempoOcupado;
-	}
+		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA 
 	
+		this.tiempoOcupado += calcularTiempoTrayecto(origen, destino);
+		this.tiempoOcupado = this.tiempoOcupado + tiempoOcupado;
+	}
+
 	public void cogerHerramienta(String tarea) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
-		if(!this.area.equals("A")) { // si no está en el almacén le añado el tiempo de trayecto hasta él
+		//Si esta en el almacen, tiempo que tarde en ir al lugar.
+		if(!this.area.equals("A")) {
 			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
 			this.area = "A";
 		}
-		this.herramienta = tarea;	
+		this.herramienta = tarea;
 	}
 	
-	public int calcularTiempoTrayecto(String origen, String destino) { // HALLAR EL CAMINO MÁS CORTO!! AMPLITUD O PROFUNDIDAD??
-		// if adyacentes return 5, else => desplazarme 1 (RECURSIVIDAD??)
-		return 5; // por ej hasta que lo complete
+	public int calcularTiempoTrayecto(String origen, String destino) {
+		int tiempo = 0;
+		if(origen.equals("A")) {
+			if(destino.equals("J3") || destino.equals("C2") || destino.equals("J2")) tiempo = 5;
+			else if (destino.equals("R") || destino.equals("C1") || destino.equals("J1") || destino.equals("U")) tiempo = 10;
+			else if(destino.equals("B")) tiempo = 15;
+		} else if(origen.equals("R")) {
+			if(destino.equals("J3")) tiempo = 5;
+			else if(destino.equals("A")) tiempo = 10;
+			else if(destino.equals("C2") || destino.equals("J2")) tiempo = 15;
+			else if(destino.equals("C1") || destino.equals("J1") || destino.equals("U")) tiempo = 20;
+			else if(destino.equals("B")) tiempo = 25;
+		} else if(origen.equals("J3")) {
+			if(destino.equals("R") || destino.equals("A")) tiempo = 5; 
+			else if(destino.equals("C2") || destino.equals("J2")) tiempo = 10;
+			else if(destino.equals("C1") || destino.equals("J1") || destino.equals("U")) tiempo = 15;
+			else if(destino.equals("B")) tiempo = 20;
+		} else if(origen.equals("C2")) {
+			if(destino.equals("A") || destino.equals("J1") || destino.equals("C1"))tiempo = 5;
+			else if(destino.equals("J3") || destino.equals("J1") || destino.equals("U")) tiempo = 10;
+			else if(destino.equals("R") || destino.equals("B")) tiempo = 15;
+		} else if(origen.equals("C1")) {
+			if(destino.equals("C2") || destino.equals("J2") || destino.equals("J1") || destino.equals("U")) tiempo = 5;
+			else if(destino.equals("A") || destino.equals("U") || destino.equals("B")) tiempo = 10;
+			else if(destino.equals("J3"))  tiempo = 15;
+			else if(destino.equals("R")) tiempo = 20;
+		} else if(origen.equals("J2")) {
+			if(destino.equals("A") || destino.equals("C2") || destino.equals("C1") || destino.equals("J1") || destino.equals("U")) tiempo = 5;
+			else if(destino.equals("B") || destino.equals("J3")) tiempo = 10;
+			else if(destino.equals("R")) tiempo = 15;
+		} else if(origen.equals("J1")) {
+			if(destino.equals("J2") || destino.equals("C1") || destino.equals("B")) tiempo = 5;
+			else if(destino.equals("A") || destino.equals("C2") || destino.equals("U")) tiempo = 10;
+			else if(destino.equals("J3")) tiempo = 15;
+			else if(destino.equals("R")) tiempo =20;
+		} else if(origen.equals("U")) {
+			if(destino.equals("J2") || destino.equals("B")) tiempo = 5;
+			else if(destino.equals("J1") || destino.equals("C1") || destino.equals("C2") || destino.equals("A")) tiempo = 10;
+			else if(destino.equals("J3")) tiempo = 15;
+			else if(destino.equals("R")) tiempo = 20;
+		}  else if(origen.equals("B")) {
+			if(destino.equals("J1") || destino.equals("U")) tiempo = 5;
+			else if(destino.equals("C1") || destino.equals("J2")) tiempo = 10;
+			else if(destino.equals("C2") || destino.equals("A")) tiempo = 15;
+			else if(destino.equals("J3")) tiempo = 20;
+			else if (destino.equals("J3")) tiempo = 20;
+		}
+		return this.tiempoOcupado = this.tiempoOcupado + tiempo;
 	}
+	
 	
 	public void printTrabajador() {
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta + " " + this.area);
