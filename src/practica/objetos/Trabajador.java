@@ -15,7 +15,7 @@ public class Trabajador {
 	int habLimpiar;
 	int habReparar;
 	int tiempoOcupado; // tiempo de trabajo restante (en minutos)
-	String herramienta; // herramienta que tiene en mano
+	Herramienta herramienta; // herramienta que tiene en mano
 	String area;
 	// A�ADIR LAS VARIABLES NECESARIAS
 
@@ -29,7 +29,7 @@ public class Trabajador {
 		this.habLimpiar  = habLimpiar;
 		this.habReparar  = habReparar;
 		this.tiempoOcupado = 0;
-		this.herramienta = "";
+		this.herramienta = null;
 		this.area = "A";
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
 		// Si se necesita a�adir valores variables, como un ID, utilizar setters
@@ -66,10 +66,10 @@ public class Trabajador {
 		this.tiempoOcupado = t;
 	}
 	
-	public String getHerramienta () {
+	public Herramienta getHerramienta () {
 		return herramienta;
 	}
-	public void setHerramienta(String herramientaTarea) {
+	public void setHerramienta(Herramienta herramientaTarea) {
 		this.herramienta = herramientaTarea;
 	}
 	
@@ -112,13 +112,13 @@ public class Trabajador {
 		this.tiempoOcupado = this.tiempoOcupado + tiempoOcupado;
 	}
 
-	public void cogerHerramienta(String tarea) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
+	public void cogerHerramienta(Herramienta herramientaNueva) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
 		//Si esta en el almacen, tiempo que tarde en ir al lugar.
 		if(!this.area.equals("A")) {
 			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
 			this.area = "A";
 		}
-		this.herramienta = tarea;
+		this.herramienta = herramientaNueva;
 	}
 	
 	public int calcularTiempoTrayecto(String origen, String destino) {
@@ -171,9 +171,22 @@ public class Trabajador {
 		return this.tiempoOcupado = this.tiempoOcupado + tiempo;
 	}
 	
+	public boolean herramientaCorrecta(String tarea) { // comparo que la herramienta del trabajador no sea nula y sea la de la tarea a realizar
+		if(this.herramienta == null)
+			return false;
+		else if(this.herramienta.getTrabajo() == tarea)
+			return true;
+		else 
+			return false;
+	}
 	
+	public void terminarDia() {
+        setArea("A");
+        setHerramienta(null);
+        setTiempoOcupado(0);
+    }
 	public void printTrabajador() {
-		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta + " " + this.area);
+		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
 	}
 	
 	
