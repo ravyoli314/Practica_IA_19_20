@@ -17,6 +17,7 @@ public class Trabajador {
 	int tiempoOcupado; // tiempo de trabajo restante (en minutos)
 	Herramienta herramienta; // herramienta que tiene en mano
 	String area;
+	int TiempoTrabajado;
 	// A�ADIR LAS VARIABLES NECESARIAS
 
 	/**
@@ -31,6 +32,7 @@ public class Trabajador {
 		this.tiempoOcupado = 0;
 		this.herramienta = null;
 		this.area = "A";
+		this.TiempoTrabajado = 0;
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
 		// Si se necesita a�adir valores variables, como un ID, utilizar setters
 	}
@@ -187,6 +189,31 @@ public class Trabajador {
     }
 	public void printTrabajador() {
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
+	}
+	
+	
+	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
+	
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora, double peso, String origen, String destino) {
+		int tiempoOcupado;
+		switch(tipoTarea) {
+		case "podar":
+			//+1 restos orgánicos
+			tiempoOcupado= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
+			break;
+		case "limpiar":
+			tiempoOcupado= (unidadesTrabajo * 60 ) / (getHabLimpiar() + mejora);
+			break;
+		case "reparar":
+			tiempoOcupado= (unidadesTrabajo * 60 ) / (getHabReparar() + mejora);
+			break;
+		default:
+			tiempoOcupado = 0;
+		}
+		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA 
+	
+		this.tiempoOcupado += calcularTiempoTrayecto(origen, destino);
+		this.tiempoOcupado = this.tiempoOcupado + tiempoOcupado + (int)peso;
 	}
 	
 	
