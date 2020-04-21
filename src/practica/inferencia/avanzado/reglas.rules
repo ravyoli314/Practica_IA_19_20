@@ -19,7 +19,7 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
  	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
 	tarea1.setUnidades(0);
 	modified(tarea1);
-	t1.printTrabajador();
+	t1.printTrabajador2();
 }
 
 
@@ -32,12 +32,39 @@ rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger o
     tarea1.getUnidades() > 0; 		// tarea pendiente 
     h1.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     t1.getTiempoOcupado() == 0; // trabajador libre
-    !t1.herramientaCorrecta(tarea1.getTipo());
+    t1.getHerramienta() == null;
+    h1.getCantidad() > 0;
   actions
  	t1.cogerHerramienta(h1); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
+ 	h1.setCantidad(h1.getCantidad() -1);
  	modified(t1);
- 	t1.printTrabajador();
+ 	modified(h1);
+ 	t1.printTrabajador2();
 }
+
+rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
+	declarations
+    practica.objetos.Tarea tarea1;
+    practica.objetos.Trabajador t1;
+	practica.objetos.Herramienta h1; // tengo en la mano
+	practica.objetos.Herramienta h2; // cojo nueva herramienta
+  preconditions
+    tarea1.getUnidades() > 0; 		// tarea pendiente 
+    h2.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
+    t1.getTiempoOcupado() == 0; // trabajador libre
+    !t1.herramientaCorrecta(tarea1.getTipo());
+    h1.getNombre().equals(t1.getHerramienta().getNombre());
+    h2.getCantidad() > 0;
+  actions
+ 	t1.cogerHerramienta(h2); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
+ 	h1.setCantidad(h1.getCantidad() +1); // devuelvo la herramienta
+ 	h2.setCantidad(h2.getCantidad() -1); // cojo una nueva
+ 	modified(t1);
+ 	modified(h1);
+ 	t1.printTrabajador2();
+}
+
+
 
 /*
 rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
@@ -66,10 +93,10 @@ rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del
  	modified(t2);
 	modified(t3);
 	modified(t4);
-	t1.printTrabajador();
-	t2.printTrabajador();
-	t3.printTrabajador();
-	t4.printTrabajador();
+	t1.printTrabajador2();
+	t2.printTrabajador2();
+	t3.printTrabajador2();
+	t4.printTrabajador2();
 }
 
 rule tareasTerminadas {
@@ -98,10 +125,10 @@ rule tareasTerminadas {
         modified(t2);
         modified(t3);
         modified(t4);
-        // t1.printTrabajador();
-        // t2.printTrabajador();
-        // t3.printTrabajador();
-        // t4.printTrabajador();
+        t1.printTrabajador2();
+        t2.printTrabajador2();
+        t3.printTrabajador2();
+        t4.printTrabajador2();
   		
 } 
 */

@@ -188,8 +188,10 @@ public class Trabajador {
         setTiempoOcupado(0);
     }
 	public void printTrabajador() {
-		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
+		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + 
+	this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
 	}
+	
 	
 	
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
@@ -217,4 +219,19 @@ public class Trabajador {
 	}
 	
 	
+	public void cogerHerramienta2(Herramienta herramientaNueva) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
+		//Si esta en el almacen, tiempo que tarde en ir al lugar.
+		if(!this.area.equals("A")) {
+			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
+			this.area = "A";
+		} 
+		this.herramienta = herramientaNueva;
+		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + "max" +   herramientaNueva.getMaxCantidad());
+		
+	}
+	
+	public void printTrabajador2() {
+		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + 
+				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad());
+	}
 }
