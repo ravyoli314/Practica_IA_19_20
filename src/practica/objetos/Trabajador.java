@@ -30,7 +30,8 @@ public class Trabajador {
 		this.habLimpiar  = habLimpiar;
 		this.habReparar  = habReparar;
 		this.tiempoOcupado = 0;
-		this.herramienta = null;
+		this.herramienta = null; // todo trabajador tiene un objeto Herramienta, pero el contenido de este puede ser null si el
+									// trabajador no tiene una en la mano, o contener los valores de una herramienta de lo contrario.
 		this.area = "A";
 		this.TiempoTrabajado = 0;
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
@@ -79,6 +80,7 @@ public class Trabajador {
 		return this.area;
 	}
 	public void setArea(String areaTarea) {
+		this.tiempoOcupado += calcularTiempoTrayecto(this.area, areaTarea); 
 		this.area = areaTarea;
 	}
 	
@@ -93,7 +95,7 @@ public class Trabajador {
 		else this.tiempoOcupado -= tiempo;
 	}
 	
-	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, String origen, String destino) {
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, String origen, String destino) { // aqui no tengo en cuenta la mejora de la herramienta
 		int tiempoOcupado;
 		switch(tipoTarea) {
 		case "podar":
@@ -108,19 +110,20 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA 
-	
-		this.tiempoOcupado += calcularTiempoTrayecto(origen, destino);
-		this.tiempoOcupado = this.tiempoOcupado + tiempoOcupado;
+		
+		tiempoOcupado += calcularTiempoTrayecto(origen, destino);
+		this.tiempoOcupado += tiempoOcupado;
 	}
 
-	public void cogerHerramienta(Herramienta herramientaNueva) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
-		//Si esta en el almacen, tiempo que tarde en ir al lugar.
+	public void cogerHerramienta(Herramienta herramientaNueva) {
+		//Si no esta en el almacen, le añado el tiempo que tarda en ir a por la herramienta
+		// Si esta en el almacen, simplemente coge la herramienta y posteriormente se le añadira el tiempo que tarde en ir al lugar de trabajo.
 		if(!this.area.equals("A")) {
 			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
 			this.area = "A";
 		}
 		this.herramienta = herramientaNueva;
+		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + "max" +   herramientaNueva.getMaxCantidad());
 	}
 	
 	public int calcularTiempoTrayecto(String origen, String destino) {
@@ -170,11 +173,13 @@ public class Trabajador {
 			else if(destino.equals("J3")) tiempo = 20;
 			else if (destino.equals("J3")) tiempo = 20;
 		}
-		return this.tiempoOcupado = this.tiempoOcupado + tiempo;
+		return tiempo;
 	}
 	
+	
+	// ESTE MÉTODO SÓLO SE UTILIZA EN EL PROBLEMA BÁSICO
 	public boolean herramientaCorrecta(String tarea) { // comparo que la herramienta del trabajador no sea nula y sea la de la tarea a realizar
-		if(this.herramienta == null)
+		if(this.herramienta.equals(null))
 			return false;
 		else if(this.herramienta.getTrabajo() == tarea)
 			return true;
@@ -196,7 +201,7 @@ public class Trabajador {
 	
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
 	
-	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora, double peso, String origen, String destino) {
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora, double peso, String origen, String destino) { // Tengo en cuenta la mejora Y el peso
 		int tiempoOcupado;
 		switch(tipoTarea) {
 		case "podar":
@@ -212,22 +217,9 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-		// AÑADIR LO QUE TARDA EN DESPLAZARSE A ESE AREA DE LA TAREA 
-	
-		this.tiempoOcupado += calcularTiempoTrayecto(origen, destino);
-		this.tiempoOcupado = this.tiempoOcupado + tiempoOcupado + (int)peso;
-	}
-	
-	
-	public void cogerHerramienta2(Herramienta herramientaNueva) { // en principio mi herramienta es limpiar, reparar, podar (no entro en detalle)
-		//Si esta en el almacen, tiempo que tarde en ir al lugar.
-		if(!this.area.equals("A")) {
-			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
-			this.area = "A";
-		} 
-		this.herramienta = herramientaNueva;
-		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + "max" +   herramientaNueva.getMaxCantidad());
-		
+			
+		tiempoOcupado += calcularTiempoTrayecto(origen, destino); // TIEMPO QUE TARDA EN DESPLAZARSE AL AREA DE LA TAREA 
+		this.tiempoOcupado += (tiempoOcupado + (int)peso);
 	}
 	
 	public void printTrabajador2() {
