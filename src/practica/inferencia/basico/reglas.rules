@@ -10,11 +10,10 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
     t1.getTiempoOcupado() == 0; // trabajador libre
-    !t1.getHerramienta().equals(null);
-    t1.getHerramienta().getTrabajo().equals(tarea1.getTipo()); 
+    t1.herramientaCorrecta(tarea1.getTipo()); // el trabajador tiene en mano la herramienta necesaria
   actions
- 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades(), t1.getArea(), tarea1.getArea()); // trabajador ocupado el tiempo que requiera la tarea
- 	t1.setArea(tarea1.getArea()); // le mando al area de la tarea
+ 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades()); // trabajador ocupado el tiempo que requiera la tarea
+ 	t1.setArea(tarea1.getArea()); // le mando al area de la tarea (este metodo le añade el tiempo de desplazamiento)
  	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
 	tarea1.setUnidades(0);
 	modified(tarea1);
@@ -29,17 +28,14 @@ rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger o
 	practica.objetos.Herramienta h1;
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
-    h1.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     t1.getTiempoOcupado() == 0; // trabajador libre
-    // t1.getHerramienta().equals(null);
-    //!t1.getHerramienta().getTrabajo().equals(tarea1.getTipo()); // esta libre pero necesita otra herramienta para esa tarea
-    !t1.herramientaCorrecta(tarea1.getTipo());
+    h1.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
+    !t1.herramientaCorrecta(tarea1.getTipo()); // este metodo devuelve false si la herramienta es nula o si no es la indicada para la tarea
   actions
- 	t1.cogerHerramienta(h1); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
+ 	t1.cogerHerramienta(h1); // este metodo tambien desplaza al trabajador al almacen (si no esta ya alli)
  	modified(t1);
  	t1.printTrabajador();
 }
-
 
 rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
 	declarations
@@ -73,6 +69,8 @@ rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del
 	t4.printTrabajador();
 }
 
+/*
+
 rule tareasTerminadas {
 	declarations
     	practica.objetos.Tarea tarea1;
@@ -105,3 +103,5 @@ rule tareasTerminadas {
         // t4.printTrabajador();
   		
 } 
+
+*/

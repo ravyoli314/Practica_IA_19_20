@@ -30,8 +30,7 @@ public class Trabajador {
 		this.habLimpiar  = habLimpiar;
 		this.habReparar  = habReparar;
 		this.tiempoOcupado = 0;
-		this.herramienta = null; // todo trabajador tiene un objeto Herramienta, pero el contenido de este puede ser null si el
-									// trabajador no tiene una en la mano, o contener los valores de una herramienta de lo contrario.
+		this.herramienta = null; // en la primera iteración, el trabajador NO tiene u objeto herramienta (==null)
 		this.area = "A";
 		this.TiempoTrabajado = 0;
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
@@ -95,7 +94,7 @@ public class Trabajador {
 		else this.tiempoOcupado -= tiempo;
 	}
 	
-	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, String origen, String destino) { // aqui no tengo en cuenta la mejora de la herramienta
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) { // aqui no tengo en cuenta la mejora de la herramienta
 		int tiempoOcupado;
 		switch(tipoTarea) {
 		case "podar":
@@ -110,24 +109,20 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-		
-		tiempoOcupado += calcularTiempoTrayecto(origen, destino);
+		// el tiempo que tarde en desplazarse lo calcula el setArea
 		this.tiempoOcupado += tiempoOcupado;
 	}
 
 	public void cogerHerramienta(Herramienta herramientaNueva) {
-		//Si no esta en el almacen, le añado el tiempo que tarda en ir a por la herramienta
-		// Si esta en el almacen, simplemente coge la herramienta y posteriormente se le añadira el tiempo que tarde en ir al lugar de trabajo.
-		if(!this.area.equals("A")) {
-			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
-			this.area = "A";
-		}
+		setArea("A"); // se encarga de añadirle el tiempo de desplazamiento (0 si ya esta en el almacen)
 		this.herramienta = herramientaNueva;
-		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + "max" +   herramientaNueva.getMaxCantidad());
+		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + " max " +   herramientaNueva.getMaxCantidad());
 	}
 	
 	public int calcularTiempoTrayecto(String origen, String destino) {
 		int tiempo = 0;
+		
+		if(origen.equals(destino)) return 0;
 		if(origen.equals("A")) {
 			if(destino.equals("J3") || destino.equals("C2") || destino.equals("J2")) tiempo = 5;
 			else if (destino.equals("R") || destino.equals("C1") || destino.equals("J1") || destino.equals("U")) tiempo = 10;
@@ -179,9 +174,9 @@ public class Trabajador {
 	
 	// ESTE MÉTODO SÓLO SE UTILIZA EN EL PROBLEMA BÁSICO
 	public boolean herramientaCorrecta(String tarea) { // comparo que la herramienta del trabajador no sea nula y sea la de la tarea a realizar
-		if(this.herramienta.equals(null))
+		if(this.herramienta == null)
 			return false;
-		else if(this.herramienta.getTrabajo() == tarea)
+		else if(this.herramienta.getTrabajo().equals(tarea))
 			return true;
 		else 
 			return false;
