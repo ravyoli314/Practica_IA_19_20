@@ -17,7 +17,7 @@ public class Trabajador {
 	int tiempoOcupado; // tiempo de trabajo restante (en minutos)
 	Herramienta herramienta; // herramienta que tiene en mano
 	String area;
-	int TiempoTrabajado;
+	int tiempoTotalTrabajado;
 	// A�ADIR LAS VARIABLES NECESARIAS
 
 	/**
@@ -30,10 +30,9 @@ public class Trabajador {
 		this.habLimpiar  = habLimpiar;
 		this.habReparar  = habReparar;
 		this.tiempoOcupado = 0;
-		this.herramienta = null; // todo trabajador tiene un objeto Herramienta, pero el contenido de este puede ser null si el
-									// trabajador no tiene una en la mano, o contener los valores de una herramienta de lo contrario.
+		this.herramienta = null; // todo trabajador tiene un objeto Herramienta, pero el contenido de este puede ser null si el trabajador no tiene una en la mano, o contener los valores de una herramienta de lo contrario.
 		this.area = "A";
-		this.TiempoTrabajado = 0;
+		this.tiempoTotalTrabajado = 0;
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
 		// Si se necesita a�adir valores variables, como un ID, utilizar setters
 	}
@@ -120,6 +119,7 @@ public class Trabajador {
 		// Si esta en el almacen, simplemente coge la herramienta y posteriormente se le añadira el tiempo que tarde en ir al lugar de trabajo.
 		if(!this.area.equals("A")) {
 			this.tiempoOcupado += calcularTiempoTrayecto(area, "A");
+			this.tiempoTotalTrabajado += this.tiempoOcupado;
 			this.area = "A";
 		}
 		this.herramienta = herramientaNueva;
@@ -192,20 +192,21 @@ public class Trabajador {
         setHerramienta(null);
         setTiempoOcupado(0);
     }
+	
 	public void printTrabajador() {
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + 
 	this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
 	}
 	
 	
-	
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
 	
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora, double peso, String origen, String destino) { // Tengo en cuenta la mejora Y el peso
-		int tiempoOcupado;
+		int tiempoOcupado; //tiempo en realizar la tarea.
+		int tiempoTrayecto = 0; //tiempo en desplazarse
 		switch(tipoTarea) {
 		case "podar":
-			//+1 restos orgánicos
+			//+ restos orgánicos
 			tiempoOcupado= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
 			break;
 		case "limpiar":
@@ -217,13 +218,19 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-			
-		tiempoOcupado += calcularTiempoTrayecto(origen, destino); // TIEMPO QUE TARDA EN DESPLAZARSE AL AREA DE LA TAREA 
-		this.tiempoOcupado += (tiempoOcupado + (int)peso);
+		
+		tiempoTrayecto = (int) (calcularTiempoTrayecto(origen, destino) + (calcularTiempoTrayecto(origen, destino)/5) * peso); // TIEMPO QUE TARDA EN DESPLAZARSE AL AREA DE LA TAREA 
+		this.tiempoOcupado += (tiempoOcupado + tiempoTrayecto);
 	}
 	
 	public void printTrabajador2() {
+		this.tiempoTotalTrabajado = this.tiempoOcupado;
+		int hours = this.tiempoTotalTrabajado / 60; 
+		int minutes = this.tiempoTotalTrabajado % 60;
+		System.out.printf("%d:%02d", hours, minutes);
+		
+		System.out.println("");
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + 
-				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad());
+				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad() + " Tiempo Trabajado total: " + this.tiempoTotalTrabajado + " min.");
 	}
 }
