@@ -18,6 +18,7 @@ public class Trabajador {
 	Herramienta herramienta; // herramienta que tiene en mano
 	String area;
 	int TiempoTrabajado;
+	int tiempoTotalTrabajado;
 	// A�ADIR LAS VARIABLES NECESARIAS
 
 	/**
@@ -33,10 +34,11 @@ public class Trabajador {
 		this.herramienta = null; // en la primera iteración, el trabajador NO tiene u objeto herramienta (==null)
 		this.area = "A";
 		this.TiempoTrabajado = 0;
+		this.tiempoTotalTrabajado = 0;
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
 		// Si se necesita a�adir valores variables, como un ID, utilizar setters
 	}
-	
+
 	/**
 	 * A�adir (si procede) m�todos auxiliares, como getters o setters
 	 */
@@ -67,14 +69,14 @@ public class Trabajador {
 	public void setTiempoOcupado(int t) {
 		this.tiempoOcupado = t;
 	}
-	
+
 	public Herramienta getHerramienta () {
 		return herramienta;
 	}
 	public void setHerramienta(Herramienta herramientaTarea) {
 		this.herramienta = herramientaTarea;
 	}
-	
+
 	public String getArea() {
 		return this.area;
 	}
@@ -82,18 +84,18 @@ public class Trabajador {
 		this.tiempoOcupado += calcularTiempoTrayecto(this.area, areaTarea); 
 		this.area = areaTarea;
 	}
-	
+
 	public int getTiempoOcupado() {
 		return tiempoOcupado;
 	}
-	
+
 	public void disminuirTiempoOcupado(int tiempo) {
 		if(tiempo > this.tiempoOcupado) {
 			this.tiempoOcupado = 0;
 		}
 		else this.tiempoOcupado -= tiempo;
 	}
-	
+
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) { // aqui no tengo en cuenta la mejora de la herramienta
 		int tiempoOcupado;
 		switch(tipoTarea) {
@@ -118,10 +120,10 @@ public class Trabajador {
 		this.herramienta = herramientaNueva;
 		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + " max " +   herramientaNueva.getMaxCantidad());
 	}
-	
+
 	public int calcularTiempoTrayecto(String origen, String destino) {
 		int tiempo = 0;
-		
+
 		if(origen.equals(destino)) return 0;
 		if(origen.equals("A")) {
 			if(destino.equals("J3") || destino.equals("C2") || destino.equals("J2")) tiempo = 5;
@@ -170,8 +172,8 @@ public class Trabajador {
 		}
 		return tiempo;
 	}
-	
-	
+
+
 	// ESTE MÉTODO SÓLO SE UTILIZA EN EL PROBLEMA BÁSICO
 	public boolean herramientaCorrecta(String tarea) { // comparo que la herramienta del trabajador no sea nula y sea la de la tarea a realizar
 		if(this.herramienta == null)
@@ -181,26 +183,26 @@ public class Trabajador {
 		else 
 			return false;
 	}
-	
+
 	public void terminarDia() {
-        setArea("A");
-        setHerramienta(null);
-        setTiempoOcupado(0);
-    }
+		setArea("A");
+		setHerramienta(null);
+		setTiempoOcupado(0);
+	}
 	public void printTrabajador() {
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + 
-	this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
+				this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
 	}
-	
-	
-	
+
+
+
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
-	
-	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora, double peso, String origen, String destino) { // Tengo en cuenta la mejora Y el peso
-		int tiempoOcupado;
+
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora) { // Tengo en cuenta la mejora Y el peso
+		int tiempoOcupado; //tiempo en realizar la tarea.
 		switch(tipoTarea) {
 		case "podar":
-			//+1 restos orgánicos
+			//+ restos orgánicos
 			tiempoOcupado= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
 			break;
 		case "limpiar":
@@ -212,13 +214,23 @@ public class Trabajador {
 		default:
 			tiempoOcupado = 0;
 		}
-			
-		tiempoOcupado += calcularTiempoTrayecto(origen, destino); // TIEMPO QUE TARDA EN DESPLAZARSE AL AREA DE LA TAREA 
-		this.tiempoOcupado += (tiempoOcupado + (int)peso);
+
+		this.tiempoOcupado += tiempoOcupado;
+	}
+	
+	public void setArea(String areaTarea, double peso) {
+		this.tiempoOcupado += (int) (calcularTiempoTrayecto(this.area, areaTarea) + (calcularTiempoTrayecto(this.area, areaTarea)/5) * peso); 
+		this.area = areaTarea;
 	}
 	
 	public void printTrabajador2() {
+		this.tiempoTotalTrabajado = this.tiempoOcupado;
+		int hours = this.tiempoTotalTrabajado / 60; 
+		int minutes = this.tiempoTotalTrabajado % 60;
+		System.out.printf("%d:%02d", hours, minutes);
+
+		System.out.println("");
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + 
-				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad());
+				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad() + " Tiempo Trabajado total: " + this.tiempoTotalTrabajado + " min.");
 	}
 }

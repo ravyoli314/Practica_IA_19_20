@@ -7,23 +7,23 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
 	declarations
     practica.objetos.Tarea tarea1;
     practica.objetos.Trabajador t1;
-    practica.objetos.Herramienta h1;
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
     t1.getTiempoOcupado() == 0; // trabajador libre
     !t1.getHerramienta().equals(null);
     t1.getHerramienta().getTrabajo().equals(tarea1.getTipo()); 
   actions
- 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades(), t1.getHerramienta().getMejora(), t1.getHerramienta().getPeso(), t1.getArea(), tarea1.getArea()); // trabajador ocupado el tiempo que requiera la tarea
- 	t1.setArea(tarea1.getArea()); // le mando al area de la tarea
+ 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades(), t1.getHerramienta().getMejora()); // trabajador ocupado el tiempo que requiera la tarea
+ 	t1.setArea(tarea1.getArea(), t1.getHerramienta().getPeso()); // le mando al area de la tarea
  	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
 	tarea1.setUnidades(0);
 	modified(tarea1);
 	t1.printTrabajador2();
 }
 
+// LA HERRAMIENTA DEL TRABAJADOR SÓLO ES NULA EN LA PRIMERA ITERACION (LUEGO SOLO HACE INTERCAMBIOS)
 
-rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
+rule cogerHerramienta1{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
 	declarations
     practica.objetos.Tarea tarea1;
     practica.objetos.Trabajador t1;
@@ -42,7 +42,7 @@ rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger o
  	t1.printTrabajador2();
 }
 
-rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
+rule cogerHerramienta2{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
 	declarations
     practica.objetos.Tarea tarea1;
     practica.objetos.Trabajador t1;
@@ -66,7 +66,6 @@ rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger o
 
 
 
-/*
 rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 
 	declarations
     practica.objetos.Trabajador t1;
@@ -98,7 +97,7 @@ rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del
 	t3.printTrabajador2();
 	t4.printTrabajador2();
 }
-
+ /*
 rule tareasTerminadas {
 	declarations
     	practica.objetos.Tarea tarea1;
