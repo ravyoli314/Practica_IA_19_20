@@ -215,15 +215,16 @@ public class Trabajador {
 	
 	public void setArea(String areaTarea, double peso) {
 		this.tiempoOcupado += (int) (calcularTiempoTrayecto(this.area, areaTarea) + (calcularTiempoTrayecto(this.area, areaTarea)/5) * peso); 
+		this.tiempoTotalTrabajado += this.tiempoOcupado;
+		System.out.println(this.nombre + " tiempoOcupadoTrayecto " + this.tiempoOcupado + " total trabajado " + this.tiempoTotalTrabajado);
 		this.area = areaTarea;
 	}
 	
 	public void printTrabajador2() {
-		this.tiempoTotalTrabajado = this.tiempoOcupado;
-		int hours = this.tiempoTotalTrabajado / 60; 
-		int minutes = this.tiempoTotalTrabajado % 60;
-		System.out.printf("%d:%02d", hours, minutes);
-		System.out.println("");
+		//int hours = this.tiempoTotalTrabajado / 60; 
+		//int minutes = this.tiempoTotalTrabajado % 60;
+		//System.out.printf("%d:%02d", hours, minutes);
+		//System.out.println("");
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + 
 				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad() + " Tiempo Trabajado total: " + this.tiempoTotalTrabajado + " min.");
 	}
