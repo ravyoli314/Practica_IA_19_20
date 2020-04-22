@@ -18,21 +18,21 @@ import practica.objetos.Tarea;
 import practica.objetos.Trabajador;
 
 /**
- * Clase creada como base para la parte 1 de la práctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
- * CÓDIGO NO MODIFICABLE
+ * Clase creada como base para la parte 1 de la prï¿½ctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
+ * Cï¿½DIGO NO MODIFICABLE
  *
  * @author Daniel Amigo Herrero
- * @author David Sánchez Pedroche
+ * @author David Sï¿½nchez Pedroche
  */
 
 public class LectorJSON {
 
-	// DEFINICIÓN DE LAS LISTAS DE OBJETOS A LEER DEL JSON
+	// DEFINICIï¿½N DE LAS LISTAS DE OBJETOS A LEER DEL JSON
 	ArrayList<Herramienta> herramientas; 
 	ArrayList<Trabajador>  trabajadores;
 	ArrayList<Tarea>       tareas;
 
-	// Cuando se llama al constructor, se crean unas listas vacías
+	// Cuando se llama al constructor, se crean unas listas vacï¿½as
 	public LectorJSON() {
 		this.herramientas = new ArrayList<Herramienta>();
 		this.trabajadores = new ArrayList<Trabajador>();
@@ -62,7 +62,7 @@ public class LectorJSON {
 
 	/**
 	 * NO MODIFICAR
-	 * Se lee el fichero recibido por parámetros y se añaden los objetos a las listas de objetos definidas
+	 * Se lee el fichero recibido por parï¿½metros y se aï¿½aden los objetos a las listas de objetos definidas
 	 * @param inputStream
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -110,7 +110,7 @@ public class LectorJSON {
 				Map.Entry<String, JSONObject> pair = (Entry<String, JSONObject>) iterator.next();
 				JSONObject herramientaObject = pair.getValue();
 				Long mejoraAux = (Long) herramientaObject.get("mejora");
-				Long cantidadAux = (Long) herramientaObject.get("mejora");
+				Long cantidadAux = (Long) herramientaObject.get("cantidad");
 				Long pesoAux = (Long) herramientaObject.get("peso");
 				herramientas.add(new Herramienta(
 						(String)  herramientaObject.get("nombre"), 

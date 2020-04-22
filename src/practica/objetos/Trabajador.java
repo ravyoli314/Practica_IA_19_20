@@ -116,7 +116,6 @@ public class Trabajador {
 	public void cogerHerramienta(Herramienta herramientaNueva) {
 		setArea("A"); // se encarga de añadirle el tiempo de desplazamiento (0 si ya esta en el almacen)
 		this.herramienta = herramientaNueva;
-		System.out.println("num herramienta actual " + herramientaNueva.getCantidad() + " max " +   herramientaNueva.getMaxCantidad());
 	}
 
 	public int calcularTiempoTrayecto(String origen, String destino) {
@@ -172,7 +171,6 @@ public class Trabajador {
 	}
 
 
-	// ESTE MÉTODO SÓLO SE UTILIZA EN EL PROBLEMA BÁSICO
 	public boolean herramientaCorrecta(String tarea) { // comparo que la herramienta del trabajador no sea nula y sea la de la tarea a realizar
 		if(this.herramienta == null)
 			return false;
@@ -188,8 +186,8 @@ public class Trabajador {
 		setTiempoOcupado(0);
 	}
 	public void printTrabajador() {
-		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + 
-				this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + " " + this.area);
+		System.out.println(this.nombre + ", " + this.tiempoOcupado + " mins, " + 
+				this.herramienta.getNombre() + ", " + this.area);
 	}
 
 

@@ -18,6 +18,7 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
 	tarea1.setUnidades(0);
 	modified(tarea1);
 	t1.printTrabajador();
+	t1.getHerramienta().printHerramienta();
 }
 
 
@@ -35,6 +36,7 @@ rule cogerHerramienta{ // por lo menos un trabajador libre que tiene que coger o
  	t1.cogerHerramienta(h1); // este metodo tambien desplaza al trabajador al almacen (si no esta ya alli)
  	modified(t1);
  	t1.printTrabajador();
+	t1.getHerramienta().printHerramienta();
 }
 
 rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 

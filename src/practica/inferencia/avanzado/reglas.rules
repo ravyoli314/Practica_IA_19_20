@@ -10,16 +10,17 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
     t1.getTiempoOcupado() == 0; // trabajador libre
-    !t1.getHerramienta().equals(null);
-    t1.getHerramienta().getTrabajo().equals(tarea1.getTipo()); 
+    t1.herramientaCorrecta(tarea1.getTipo());
   actions
  	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades(), t1.getHerramienta().getMejora()); // trabajador ocupado el tiempo que requiera la tarea
- 	t1.setArea(tarea1.getArea(), t1.getHerramienta().getPeso()); // le mando al area de la tarea
+ 	t1.setArea(tarea1.getArea(), t1.getHerramienta().getPeso()); // le mando al area de la tarea (y añado el tiempo que tarda en desplazarse)
  	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
 	tarea1.setUnidades(0);
 	modified(tarea1);
-	t1.printTrabajador2();
+	t1.printTrabajador();
+	t1.getHerramienta().printHerramienta();
 }
+
 
 // LA HERRAMIENTA DEL TRABAJADOR SÓLO ES NULA EN LA PRIMERA ITERACION (LUEGO SOLO HACE INTERCAMBIOS)
 
@@ -32,36 +33,37 @@ rule cogerHerramienta1{ // por lo menos un trabajador libre que tiene que coger 
     tarea1.getUnidades() > 0; 		// tarea pendiente 
     h1.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     t1.getTiempoOcupado() == 0; // trabajador libre
-    t1.getHerramienta() == null;
+    t1.getHerramienta() == null; // aún no tiene herramienta por lo que no hay que devolver ninguna, solo coger una nueva
     h1.getCantidad() > 0;
   actions
  	t1.cogerHerramienta(h1); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
  	h1.setCantidad(h1.getCantidad() -1);
  	modified(t1);
  	modified(h1);
- 	t1.printTrabajador2();
+ 	t1.printTrabajador();
+ 	t1.getHerramienta().printHerramienta();
 }
 
 rule cogerHerramienta2{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
 	declarations
     practica.objetos.Tarea tarea1;
     practica.objetos.Trabajador t1;
-	practica.objetos.Herramienta h1; // tengo en la mano
 	practica.objetos.Herramienta h2; // cojo nueva herramienta
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
-    h2.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     t1.getTiempoOcupado() == 0; // trabajador libre
-    !t1.herramientaCorrecta(tarea1.getTipo());
-    h1.getNombre().equals(t1.getHerramienta().getNombre());
+    !t1.herramientaCorrecta(tarea1.getTipo()); 
+    h2.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     h2.getCantidad() > 0;
   actions
+  	t1.getHerramienta().setCantidad(t1.getHerramienta().getCantidad() +1); // devuelvo la herramienta
+  	modified(t1.getHerramienta()); // La he devuelto al almacén (+1)
  	t1.cogerHerramienta(h2); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
- 	h1.setCantidad(h1.getCantidad() +1); // devuelvo la herramienta
  	h2.setCantidad(h2.getCantidad() -1); // cojo una nueva
  	modified(t1);
- 	modified(h1);
+ 	modified(h2);
  	t1.printTrabajador2();
+ 	t1.getHerramienta().printHerramienta();
 }
 
 rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del/los que termina primero (dejandolo libre y disminuyendo el tiempo de ocupacion restante de los demas) 

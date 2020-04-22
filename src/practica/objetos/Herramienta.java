@@ -15,7 +15,7 @@ public class Herramienta {
 	double peso;
 	int mejora;
 	int cantidad;
-	final int MaxCantidad;
+	int MaxCantidad;
 	// A�ADIR LAS VARIABLES NECESARIAS
 
 	/**
@@ -71,5 +71,9 @@ public class Herramienta {
 	}	
 	public int getMaxCantidad() {
 		return MaxCantidad;
+	}
+	
+	public void printHerramienta() {
+		System.out.println(this.nombre + ", " + this.trabajo  + ", peso: " + this.peso  + ", mejora: " + this.mejora  + ", cantidad: " + this.cantidad  + ", max: " + this.MaxCantidad);
 	}
 }
