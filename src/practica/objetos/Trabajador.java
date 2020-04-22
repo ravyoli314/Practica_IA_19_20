@@ -17,7 +17,6 @@ public class Trabajador {
 	int tiempoOcupado; // tiempo de trabajo restante (en minutos)
 	Herramienta herramienta; // herramienta que tiene en mano
 	String area;
-	int TiempoTrabajado;
 	int tiempoTotalTrabajado;
 	// A�ADIR LAS VARIABLES NECESARIAS
 
@@ -33,7 +32,6 @@ public class Trabajador {
 		this.tiempoOcupado = 0;
 		this.herramienta = null; // en la primera iteración, el trabajador NO tiene u objeto herramienta (==null)
 		this.area = "A";
-		this.TiempoTrabajado = 0;
 		this.tiempoTotalTrabajado = 0;
 		// A�adir el estado inicial (est�tico) de las variables que se a�adan
 		// Si se necesita a�adir valores variables, como un ID, utilizar setters
@@ -195,7 +193,6 @@ public class Trabajador {
 	}
 
 
-
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
 
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora) { // Tengo en cuenta la mejora Y el peso
@@ -228,7 +225,6 @@ public class Trabajador {
 		int hours = this.tiempoTotalTrabajado / 60; 
 		int minutes = this.tiempoTotalTrabajado % 60;
 		System.out.printf("%d:%02d", hours, minutes);
-
 		System.out.println("");
 		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + 
 				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad() + " Tiempo Trabajado total: " + this.tiempoTotalTrabajado + " min.");
