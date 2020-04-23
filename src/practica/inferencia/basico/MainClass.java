@@ -107,6 +107,10 @@ public class MainClass {
 	 */
 	public static void printState(ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {
 		System.out.println("************** IMPRESION DEL ESTADO **************");
+		for (int i = 0; i < herramientas.size(); i++) herramientas.get(i).printHerramienta();
+		for (int i = 0; i < trabajadores.size(); i++) trabajadores.get(i).printTrabajador();
+		for (int i = 0; i < tareas.size(); i++) tareas.get(i).printTarea();
+		
 	}
 
 	/**

@@ -186,37 +186,43 @@ public class Trabajador {
 		setTiempoOcupado(0);
 	}
 	public void printTrabajador() {
-		System.out.println(this.nombre + ", " + this.tiempoOcupado + " mins, " + 
-				this.herramienta.getNombre() + ", " + this.area);
+		String herrActual;
+		if(this.herramienta == null) herrActual = "null";
+		else herrActual = this.herramienta.getNombre();
+		
+		System.out.println("TRABAJADOR - Nombre: " + this.nombre + ", tiempo ocupado (mins): " + this.tiempoOcupado + ", tiempo total trabajado: " + this.tiempoTotalTrabajado +
+				", herramienta: " + herrActual + ", area: " + this.area);
 	}
 
 
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
 
-	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora) { // Tengo en cuenta la mejora Y el peso
-		int tiempoOcupado; //tiempo en realizar la tarea.
+	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora) { // Tengo en cuenta la MEJORA de la herramienta
+		int tiempoTrabajando; //tiempo en realizar la tarea.
 		switch(tipoTarea) {
 		case "podar":
 			//+ restos orgánicos
-			tiempoOcupado= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
+			tiempoTrabajando= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
 			break;
 		case "limpiar":
-			tiempoOcupado= (unidadesTrabajo * 60 ) / (getHabLimpiar() + mejora);
+			tiempoTrabajando= (unidadesTrabajo * 60 ) / (getHabLimpiar() + mejora);
 			break;
 		case "reparar":
-			tiempoOcupado= (unidadesTrabajo * 60 ) / (getHabReparar() + mejora);
+			tiempoTrabajando= (unidadesTrabajo * 60 ) / (getHabReparar() + mejora);
 			break;
 		default:
-			tiempoOcupado = 0;
+			tiempoTrabajando = 0;
 		}
 
-		this.tiempoOcupado += tiempoOcupado;
+		this.tiempoOcupado += tiempoTrabajando;
+		this.tiempoTotalTrabajado += tiempoTrabajando;
 	}
 	
-	public void setArea(String areaTarea, double peso) {
-		this.tiempoOcupado += (int) (calcularTiempoTrayecto(this.area, areaTarea) + (calcularTiempoTrayecto(this.area, areaTarea)/5) * peso); 
-		this.tiempoTotalTrabajado += this.tiempoOcupado;
-		System.out.println(this.nombre + " tiempoOcupadoTrayecto " + this.tiempoOcupado + " total trabajado " + this.tiempoTotalTrabajado);
+	public void setArea(String areaTarea, double peso) { // Tengo en cuenta el PESO de la herramienta
+		int tiempoDesplazamiento = (int) (calcularTiempoTrayecto(this.area, areaTarea) + (calcularTiempoTrayecto(this.area, areaTarea)/5) * peso);
+		this.tiempoOcupado += tiempoDesplazamiento; 
+		this.tiempoTotalTrabajado += tiempoDesplazamiento;
+		System.out.println(this.nombre + " tiempo trayecto: " + tiempoDesplazamiento);
 		this.area = areaTarea;
 	}
 	

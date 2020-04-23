@@ -74,6 +74,6 @@ public class Herramienta {
 	}
 	
 	public void printHerramienta() {
-		System.out.println(this.nombre + ", " + this.trabajo  + ", peso: " + this.peso  + ", mejora: " + this.mejora  + ", cantidad: " + this.cantidad  + ", max: " + this.MaxCantidad);
+		System.out.println("HERRAMIENTA - Nombre: " + this.nombre + ", trabajo: " + this.trabajo  + ", peso: " + this.peso  + ", mejora: " + this.mejora  + ", cantidad: " + this.cantidad  + ", max: " + this.MaxCantidad);
 	}
 }

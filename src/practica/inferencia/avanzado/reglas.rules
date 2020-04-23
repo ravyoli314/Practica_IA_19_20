@@ -2,6 +2,29 @@
 
 // Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
 
+rule comenzarTareaPoda{ // En las tareas de poda, se generan tareas de limpieza
+	declarations
+    practica.objetos.Tarea tarea1;
+    practica.objetos.Tarea tarea2;
+    practica.objetos.Trabajador t1;
+  preconditions
+    tarea1.getUnidades() > 0; 	
+    tarea1.getTipo().equals("podar"); // tarea de poda pendiente
+    tarea2.getTipo().equals("limpiar");
+    tarea2.getArea().equals(tarea1.getArea()); // escojo la tarea de limpieza correspondiente al area de poda 
+    t1.getTiempoOcupado() == 0; // trabajador libre para podar
+    t1.herramientaCorrecta(tarea1.getTipo());
+  actions
+ 	t1.tiempoTarea(tarea1.getTipo(), tarea1.getUnidades(), t1.getHerramienta().getMejora()); // trabajador ocupado el tiempo que requiera la tarea
+ 	t1.setArea(tarea1.getArea(), t1.getHerramienta().getPeso()); // le mando al area de la tarea (y añado el tiempo que tarda en desplazarse)
+ 	modified(t1); // necesario para que el motor pueda seguir utilizando los objetos modificados
+	tarea2.setUnidades(tarea2.getUnidades() + tarea1.getUnidades()); // añado las unidades correspondientes de poda a la tarea de limpieza
+	modified(tarea2);
+	tarea1.setUnidades(0);
+	modified(tarea1);
+	t1.printTrabajador();
+	t1.getHerramienta().printHerramienta();
+}
 
 rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta necesaria
 	declarations
@@ -23,17 +46,17 @@ rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta neces
 
 
 // LA HERRAMIENTA DEL TRABAJADOR SÓLO ES NULA EN LA PRIMERA ITERACION (LUEGO SOLO HACE INTERCAMBIOS)
-
-rule cogerHerramienta1{ // por lo menos un trabajador libre que tiene que coger otra herramienta para la siguiente tarea
+// En este caso cogemos una herramienta pero no devolvemos otra
+rule cogerHerramienta1{ // por lo menos un trabajador libre que tiene que coger una herramienta para la siguiente tarea
 	declarations
     practica.objetos.Tarea tarea1;
     practica.objetos.Trabajador t1;
 	practica.objetos.Herramienta h1;
   preconditions
     tarea1.getUnidades() > 0; 		// tarea pendiente 
-    h1.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     t1.getTiempoOcupado() == 0; // trabajador libre
     t1.getHerramienta() == null; // aún no tiene herramienta por lo que no hay que devolver ninguna, solo coger una nueva
+    h1.getTrabajo().equals(tarea1.getTipo()); // Herramienta acorde con la tarea a realizar
     h1.getCantidad() > 0;
   actions
  	t1.cogerHerramienta(h1); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
@@ -58,11 +81,11 @@ rule cogerHerramienta2{ // por lo menos un trabajador libre que tiene que coger 
   actions
   	t1.getHerramienta().setCantidad(t1.getHerramienta().getCantidad() +1); // devuelvo la herramienta
   	modified(t1.getHerramienta()); // La he devuelto al almacén (+1)
- 	t1.cogerHerramienta(h2); // el metodo coger herramienta se encarga de despalzarse al almacen en caso de que este alli
+ 	t1.cogerHerramienta(h2); // el metodo coger herramienta se encarga de despalzarse al almacen
  	h2.setCantidad(h2.getCantidad() -1); // cojo una nueva
  	modified(t1);
  	modified(h2);
- 	t1.printTrabajador2();
+ 	t1.printTrabajador();
  	t1.getHerramienta().printHerramienta();
 }
 
@@ -98,10 +121,17 @@ rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del
 		t4.printTrabajador2();
 	
 }
- /*
+
+// La condición de que un trabajador esté libre activa las cuatro primeras reglas (comenzar tareas
+// y coger herramientas) sólo cuando hay tareas pendientes. Por lo que esta regla podrá activarse
+// únicamente cuando las demás no estén disponibles (no queden tareas por completar) y tras la última 
+// ejecución de actualizarTiempo. La condición de que dicho trabajador no se encuentre en el almacen
+// la incluimos para evitar un bucle infinito, ya que una vez ejecutada esta regla todos los trabajadores
+// terminan su trabajo, dejan sus herramientas y vuelven al almacén.
+
+
 rule tareasTerminadas {
 	declarations
-    	practica.objetos.Tarea tarea1;
     	practica.objetos.Trabajador t1;
     	practica.objetos.Trabajador t2;
     	practica.objetos.Trabajador t3;
@@ -113,11 +143,18 @@ rule tareasTerminadas {
   		!t2.getNombre().equals(t3.getNombre());
   		!t2.getNombre().equals(t4.getNombre());
   		!t3.getNombre().equals(t4.getNombre());
-    	tarea1.getUnidades() == 0; // NO quedan tareas pendientes
-    	t1.getTiempoOcupado() == 0; // trabajador libre
-    	!t1.getArea().equals("A");
+    	t1.getTiempoOcupado() == 0; // por lo menos hay un trabajador libre
+    	!t1.getArea().equals("A"); // Tras haber asignado las ultimas tareas no hay ningun trabajador en el almacen
    	actions
-   		t1.terminarDia();
+   		t1.getHerramienta().setCantidad(t1.getHerramienta().getCantidad() + 1); // Devuelvo las herramientas al almacén
+   		t2.getHerramienta().setCantidad(t2.getHerramienta().getCantidad() + 1);
+   		t3.getHerramienta().setCantidad(t3.getHerramienta().getCantidad() + 1);
+   		t4.getHerramienta().setCantidad(t4.getHerramienta().getCantidad() + 1);
+   		modified(t1.getHerramienta());
+   		modified(t2.getHerramienta());
+   		modified(t3.getHerramienta());
+   		modified(t4.getHerramienta());
+   		t1.terminarDia(); // les mando al almacén, con herramienta y ocupación nula 
         t2.terminarDia();
         t3.terminarDia();
         t4.terminarDia();
@@ -125,10 +162,6 @@ rule tareasTerminadas {
         modified(t2);
         modified(t3);
         modified(t4);
-        t1.printTrabajador2();
-        t2.printTrabajador2();
-        t3.printTrabajador2();
-        t4.printTrabajador2();
   		
 } 
-*/
+
