@@ -189,8 +189,9 @@ public class Trabajador {
 		String herrActual;
 		if(this.herramienta == null) herrActual = "null";
 		else herrActual = this.herramienta.getNombre();
-		
-		System.out.println("TRABAJADOR - Nombre: " + this.nombre + ", tiempo ocupado (mins): " + this.tiempoOcupado + ", tiempo total trabajado: " + this.tiempoTotalTrabajado +
+	
+		System.out.println("TRABAJADOR - Nombre: " + this.nombre + ", tiempo ocupado (mins): " + this.tiempoOcupado + 
+				", tiempo total trabajado (horas): " + this.tiempoTotalTrabajado/60 + ":" + this.tiempoTotalTrabajado%60 +
 				", herramienta: " + herrActual + ", area: " + this.area);
 	}
 
@@ -226,12 +227,4 @@ public class Trabajador {
 		this.area = areaTarea;
 	}
 	
-	public void printTrabajador2() {
-		//int hours = this.tiempoTotalTrabajado / 60; 
-		//int minutes = this.tiempoTotalTrabajado % 60;
-		//System.out.printf("%d:%02d", hours, minutes);
-		//System.out.println("");
-		System.out.println(this.nombre + " " + this.tiempoOcupado + " mins " + this.herramienta.getNombre() + " " + this.herramienta.getTrabajo() + 
-				" " + this.area + " cantidad restante: " + this.herramienta.getCantidad() + " cantidad maxima: " + this.herramienta.getMaxCantidad() + " Tiempo Trabajado total: " + this.tiempoTotalTrabajado + " min.");
-	}
 }
