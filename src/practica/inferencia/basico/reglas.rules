@@ -3,6 +3,9 @@
 // Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
 
 
+/************************BASICO*********************/
+
+
 rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta necesaria
 	declarations
     practica.objetos.Tarea tarea1;

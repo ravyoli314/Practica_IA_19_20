@@ -2,6 +2,8 @@
 
 // Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
 
+/************************AVANZADO*********************/
+
 rule comenzarTareaPoda{ // En las tareas de poda, se generan tareas de limpieza
 	declarations
     practica.objetos.Tarea tarea1;

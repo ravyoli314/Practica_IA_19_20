@@ -101,7 +101,7 @@ public class Trabajador {
 			tiempoOcupado= (unidadesTrabajo * 60) / getHabPodar();
 			break;
 		case "limpiar":
-			tiempoOcupado= (unidadesTrabajo * 60 )/ getHabLimpiar();
+			tiempoOcupado= (unidadesTrabajo * 60 ) / getHabLimpiar();
 			break;
 		case "reparar":
 			tiempoOcupado= (unidadesTrabajo * 60 ) / getHabReparar();
@@ -185,6 +185,7 @@ public class Trabajador {
 		setHerramienta(null);
 		setTiempoOcupado(0);
 	}
+	
 	public void printTrabajador() {
 		String herrActual;
 		if(this.herramienta == null) herrActual = "null";
@@ -202,7 +203,6 @@ public class Trabajador {
 		int tiempoTrabajando; //tiempo en realizar la tarea.
 		switch(tipoTarea) {
 		case "podar":
-			//+ restos orgánicos
 			tiempoTrabajando= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
 			break;
 		case "limpiar":
