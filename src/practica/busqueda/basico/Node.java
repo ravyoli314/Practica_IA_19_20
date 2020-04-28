@@ -7,39 +7,42 @@ import practica.objetos.Tarea;
 import practica.objetos.Trabajador;
 
 /**
- * Clase creada como base para la parte 2 de la práctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
+ * Clase creada como base para la parte 2 de la prï¿½ctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
  *
  * @author Daniel Amigo Herrero
- * @author David Sánchez Pedroche
+ * @author David Sï¿½nchez Pedroche
  * 
  */
 
 public class Node {
 	private double cost;							// Valor del coste de llegada al nodo
-	private double heuristic;						// Valor de la heurística del nodo
-	private double evaluation;						// Valor de la evaluación
+	private double heuristic;						// Valor de la heurï¿½stica del nodo
+	private double evaluation;						// Valor de la evaluaciï¿½n
 	private Node parent;							// Nodo padre del arbol A*
-	private Node nextNodeList = null;				// Para la gestión de la lista
+	private Node nextNodeList = null;				// Para la gestiï¿½n de la lista
 	ArrayList<Herramienta> herramientas;
 	ArrayList<Trabajador>  trabajadores;
 	ArrayList<Tarea>       tareas;
-	// Añadir más variables si se desea
+	// Aï¿½adir mï¿½s variables si se desea
 
 	/**
 	 * MODIFICAR
 	 * Constructor para introducir un nuevo nodo en el algoritmo A estrella
 	 */
-	public Node(Node parentNode, ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {
-		this.parent       = parentNode;  // padre en el árbol A*
+	public Node(Node parentNode, ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {	
+		// CREAR ARRAYLISTS NUEVOS PARA TRABAJADORES, HERRAMIENTAS Y TAREAS Y COPIAR EN ELLOS LOS OBJETOS QUE NOS PASAN		
+		this.parent       = parentNode;  // padre en el ï¿½rbol A*
 		this.herramientas = herramientas;
 		this.trabajadores = trabajadores;
 		this.tareas       = tareas;
-		// Añadir más variables si se desea
+		// Aï¿½adir mï¿½s variables si se desea
+		
+		// calcular funcion de evaluacion -> pasamos la heuristica (calcular) y el coste
 	}
 
 	/**
 	 * MODIFICAR
-	 * Constructor auxiliar para la implementación del algoritmo. Genera una copia de un nodo para introducirla en la OpenList
+	 * Constructor auxiliar para la implementaciï¿½n del algoritmo. Genera una copia de un nodo para introducirla en la OpenList
 	 */ 
 	public Node(Node original) {
 		// Incluir todas las variables del nodo
@@ -48,10 +51,10 @@ public class Node {
 		this.evaluation   = original.evaluation;
 		this.parent       = original.parent;
 		this.nextNodeList = original.nextNodeList;
-		// Añadir más variables si se desea
+		// Aï¿½adir mï¿½s variables si se desea
 
 		// Se copian los objetos de los ArrayList a uno nuevo de este Nodo
-		// Si se necesita añadir valores variables, como un ID, utilizar setters
+		// Si se necesita aï¿½adir valores variables, como un ID, utilizar setters
 		ArrayList<Trabajador> trabajadores = new ArrayList<Trabajador>();
 		for (int i = 0; i < original.trabajadores.size(); i++) {
 			Trabajador trabajador = new Trabajador(original.trabajadores.get(i).getNombre(), original.trabajadores.get(i).getHabPodar(), original.trabajadores.get(i).getHabLimpiar(), original.trabajadores.get(i).getHabReparar());
@@ -80,7 +83,7 @@ public class Node {
 	/**
 	 *  Calcula el valor de la heuristica del problema para el nodo 
 	 *  MODIFICAR
-	 * @param finalNode - El nodo sobre el que calcular la heurística
+	 * @param finalNode - El nodo sobre el que calcular la heurï¿½stica
 	 * this.heuristica  - Resultado
 	 */
 	public void computeHeuristic(Node finalNode) {
@@ -89,29 +92,29 @@ public class Node {
 	}
 
 	/**
-	 * Comprobación de que la información de un nodo es equivalente a la de otro nodo
-	 * Solo comparar la información necesaria para ver si es el mismo estado del problema
+	 * Comprobaciï¿½n de que la informaciï¿½n de un nodo es equivalente a la de otro nodo
+	 * Solo comparar la informaciï¿½n necesaria para ver si es el mismo estado del problema
 	 * 
 	 * @param other - el nodo con el que comparar this
 	 * @return true: son iguales. false: no lo son
 	 */
 	public boolean equals(Node other) {
 		boolean check = true; // 
-		// MODIFICAR la condición para ajustarse a las necesidades del problema
+		// MODIFICAR la condiciï¿½n para ajustarse a las necesidades del problema
 		return check;
 	}
 
 
 	/**
-	 * Impresión de la información del nodo
-	 * @param printDebug. Permite seleccionar cuántos mensajes imprimir
+	 * Impresiï¿½n de la informaciï¿½n del nodo
+	 * @param printDebug. Permite seleccionar cuï¿½ntos mensajes imprimir
 	 */
 	public void printNodeData(int printDebug) {
 		
 	}
 
 	/**
-	 * Ejecuta la función de evaluacion del problema para el nodo. IMPORTANTE: ejecutar después el cálculo del coste y heurística
+	 * Ejecuta la funciï¿½n de evaluacion del problema para el nodo. IMPORTANTE: ejecutar despuï¿½s el cï¿½lculo del coste y heurï¿½stica
 	 */
 	public void computeEvaluation() {
 		this.evaluation = this.cost + this.heuristic; 
@@ -119,7 +122,7 @@ public class Node {
 
 	/**** Getters y Setters ****/
 	/**
-	 * MODIFICAR si se considera necesario. No es imprescindible, solo si consideras que puede ayudar a tu implementación
+	 * MODIFICAR si se considera necesario. No es imprescindible, solo si consideras que puede ayudar a tu implementaciï¿½n
 	 */
 	public double getEvaluation() {
 		return evaluation;

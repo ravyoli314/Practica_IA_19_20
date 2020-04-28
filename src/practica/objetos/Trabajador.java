@@ -79,7 +79,9 @@ public class Trabajador {
 		return this.area;
 	}
 	public void setArea(String areaTarea) {
-		this.tiempoOcupado += calcularTiempoTrayecto(this.area, areaTarea); 
+		int tiempoDesplazamiento = calcularTiempoTrayecto(this.area, areaTarea); 
+		this.tiempoOcupado += tiempoDesplazamiento;
+		this.tiempoTotalTrabajado += tiempoDesplazamiento;
 		this.area = areaTarea;
 	}
 
@@ -111,6 +113,7 @@ public class Trabajador {
 		}
 		// el tiempo que tarde en desplazarse lo calcula el setArea
 		this.tiempoOcupado += tiempoOcupado;
+		this.tiempoTotalTrabajado += tiempoOcupado;
 	}
 
 	public void cogerHerramienta(Herramienta herramientaNueva) {
