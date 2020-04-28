@@ -2,6 +2,8 @@
 
 // Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
 
+/************************AVANZADO*********************/
+
 rule comenzarTareaPoda{ // En las tareas de poda, se generan tareas de limpieza
 	declarations
     practica.objetos.Tarea tarea1;
@@ -115,10 +117,10 @@ rule actualizarTiempo{ // cuando están todos ocupados, hace pasar el tiempo del
 	 	modified(t2);
 		modified(t3);
 		modified(t4);
-		t1.printTrabajador2();
-		t2.printTrabajador2();
-		t3.printTrabajador2();
-		t4.printTrabajador2();
+		t1.printTrabajador();
+		t2.printTrabajador();
+		t3.printTrabajador();
+		t4.printTrabajador();
 	
 }
 

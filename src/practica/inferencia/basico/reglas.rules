@@ -3,6 +3,9 @@
 // Un bloquecito de estos por cada regla (ejemplos de reglas: cogerHerram, iralAlmacen, moverse...)
 
 
+/************************BASICO*********************/
+
+
 rule comenzarTarea{ // por lo menos un trabajador libre CON la herramienta necesaria
 	declarations
     practica.objetos.Tarea tarea1;
@@ -97,10 +100,10 @@ rule tareasTerminadas {
     	t1.getTiempoOcupado() == 0; // por lo menos hay un trabajador libre
     	!t1.getArea().equals("A"); // Tras haber asignado las ultimas tareas no hay ningun trabajador en el almacen
    	actions
-   		t1.getHerramienta().setCantidad(t1.getHerramienta().getCantidad() + 1); // Devuelvo las herramientas al almacén
-   		t2.getHerramienta().setCantidad(t2.getHerramienta().getCantidad() + 1);
-   		t3.getHerramienta().setCantidad(t3.getHerramienta().getCantidad() + 1);
-   		t4.getHerramienta().setCantidad(t4.getHerramienta().getCantidad() + 1);
+   		t1.getHerramienta().setCantidad(t1.getHerramienta().getCantidad()); // Devuelvo las herramientas al almacén
+   		t2.getHerramienta().setCantidad(t2.getHerramienta().getCantidad());
+   		t3.getHerramienta().setCantidad(t3.getHerramienta().getCantidad());
+   		t4.getHerramienta().setCantidad(t4.getHerramienta().getCantidad());
    		modified(t1.getHerramienta());
    		modified(t2.getHerramienta());
    		modified(t3.getHerramienta());
