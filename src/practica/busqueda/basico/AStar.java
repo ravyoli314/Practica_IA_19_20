@@ -20,7 +20,7 @@ import practica.objetos.Trabajador;
 public class AStar {
 
 	int printDebug; // 0: nada, 1: informaci�n b�sica, 2: informaci�n completa
-
+	
 	private OpenList openList = new OpenList();						// Lista de nodos por explorar
 	private ArrayList<Node> closedList = new ArrayList<Node>();		// Lista de nodos explorados
 	private Node initialNode;										// Nodo inicial del problema
@@ -120,7 +120,7 @@ public class AStar {
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
 				currentNode.printNodeData(printDebug);
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
-				
+
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
 					this.setGoalNode(currentNode);
 					this.setFindGoal(true);

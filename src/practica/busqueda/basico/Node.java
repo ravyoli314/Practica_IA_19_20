@@ -118,6 +118,7 @@ public class Node {
 			i++;
 		}
 		
+<<<<<<< HEAD
 		
 		int j = 0;
 		while((check == true) && j < this.trabajadores.size()) {
@@ -169,19 +170,45 @@ public class Node {
 	 * @param printDebug. Permite seleccionar cu�ntos mensajes imprimir
 	 */
 	public void printNodeData(int printDebug) { // COMPLETAR Y PONER LOS 3 CASOS DE DEBUG !!!!!!!!!!!!!!!!!!!!!
-		int tareasPendientes = 0;
-		for (Tarea tarea: this.tareas) {
-			if(tarea.getUnidades() > 0)
-				tareasPendientes++;
-		}
-		System.out.println("TAREAS PENDIENTES: "+ tareasPendientes);
 		
-		for (Trabajador trabajador: this.trabajadores) {
-			if(trabajador.getNombre().equals("Antonio")) {
-				System.out.println("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado() + " tiempo ocupado: " + trabajador.getTiempoOcupado());
-				break; }
+		if(printDebug == 1) {
+			System.out.print("TAREAS PENDIENTES: ");
+			int tareasPendientes = 0;
+			for (Tarea tarea: this.tareas) {
+				if(tarea.getUnidades() > 0)
+					tareasPendientes++;
+			}
+			System.out.print(tareasPendientes);
+			System.out.println("");
+			
+			for (Trabajador trabajador: this.trabajadores) {
+				if(trabajador.getNombre().equals("Antonio")) {
+					System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado());
+					break; }
+			}
 		}
 		
+		else if(printDebug == 2) {
+			System.out.print("TAREAS PENDIENTES: ");
+			for (Tarea tarea: this.tareas) {
+				if(tarea.getUnidades() > 0)
+					System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+			}
+			System.out.println("");
+			
+			for (Trabajador trabajador: this.trabajadores) {
+				if(trabajador.getNombre().equals("Antonio")) {
+					System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado());
+					break; }
+			}
+			
+		}
+		
+		else if(printDebug == 0) {
+			System.out.println(" nada ");
+		}
+		
+		else System.out.println("error");
 	}
 
 	/**
