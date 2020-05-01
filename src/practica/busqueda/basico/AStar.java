@@ -32,6 +32,8 @@ public class AStar {
 	 * MODIFICAR
 	 * @param currentNode - el nodo actual
 	 */
+	
+	private double ev;
 	private void addAdjacentNodes(Node currentNode) {
 		ArrayList<Trabajador> trabajadores  = currentNode.getTrabajadores();
 		ArrayList<Herramienta> herramientas = currentNode.getHerramientas();
@@ -84,7 +86,11 @@ public class AStar {
 				
 				Node sucesor = new Node(currentNode, herramientasNuevas, trabajadoresNuevos, tareasNuevas); 
 				// SUCESOR.setCoste(coste), sucesor.setHeuristic(...), sucesor.computeEvaluation() !!!!!!!!
-				currentNode.setNextNode(sucesor);
+				// ---------------------------------------------------------------
+				this.ev ++; // para pruebas
+				sucesor.setEvaluation(ev); // para pruebas
+				// ---------------------------------------------------------------
+				currentNode.setNextNode(sucesor); 
 				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
 		} // for	
@@ -110,7 +116,8 @@ public class AStar {
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
 				currentNode.printNodeData(printDebug);
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
-
+				currentNode.printNodeData(2); // PARA PRUEBAS 
+				
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
 					this.setGoalNode(currentNode);
 					this.setFindGoal(true);
@@ -149,6 +156,7 @@ public class AStar {
 		this.closedList = new ArrayList<Node>();
 		this.openList   = new OpenList();
 		this.openList.insertAtEvaluation(initialNode); // A�adimos a la lista de nodos sin explorar el nodo inicial
+		this.ev = 0; // PARA HACER PRUEBAS (me invento la evaluacion)
 	}
 
 

@@ -73,6 +73,9 @@ public class MainClass {
 		//-------- Se crean los inicializan los objetos para ejecutar la solución --------//
 		Node initialNode = new Node(null, herramientas, trabajadores, tareas);
 		Node goalNode    = new Node(initialNode);
+		for (Tarea tarea : goalNode.getTareas()) {
+			tarea.setUnidades(0);
+		}
 		AStar aStar = new AStar(printDebug, initialNode, goalNode); // Se inicializa el A-Estrella
 
 		//----------------------------- Ejecución del algoritmo ---------------------------//

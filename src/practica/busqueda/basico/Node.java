@@ -99,8 +99,20 @@ public class Node {
 	 * @return true: son iguales. false: no lo son
 	 */
 	public boolean equals(Node other) {
-		boolean check = true; // 
-		// MODIFICAR la condici�n para ajustarse a las necesidades del problema
+		boolean check = true; 
+		
+		for (Tarea tarea: this.tareas) {
+			if(tarea.getUnidades() > 0)
+				System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+		}
+		System.out.println("");
+		
+		for (Trabajador trabajador: this.trabajadores) {
+			if(trabajador.getNombre().equals("Antonio")) {
+				System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTempoTotalTrabajado());
+				break; }
+		}
+		
 		return check;
 	}
 
@@ -109,7 +121,19 @@ public class Node {
 	 * Impresi�n de la informaci�n del nodo
 	 * @param printDebug. Permite seleccionar cu�ntos mensajes imprimir
 	 */
-	public void printNodeData(int printDebug) {
+	public void printNodeData(int printDebug) { // COMPLETAR Y PONER LOS 3 CASOS DE DEBUG !!!!!!!!!!!!!!!!!!!!!
+		System.out.print("TAREAS PENDIENTES: ");	
+		for (Tarea tarea: this.tareas) {
+			if(tarea.getUnidades() > 0)
+				System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+		}
+		System.out.println("");
+		
+		for (Trabajador trabajador: this.trabajadores) {
+			if(trabajador.getNombre().equals("Antonio")) {
+				System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTempoTotalTrabajado());
+				break; }
+		}
 		
 	}
 

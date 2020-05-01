@@ -88,6 +88,9 @@ public class Trabajador {
 	public int getTiempoOcupado() {
 		return tiempoOcupado;
 	}
+	public int getTempoTotalTrabajado() {
+		return tiempoTotalTrabajado;
+	}
 
 	public void disminuirTiempoOcupado(int tiempo) {
 		if(tiempo > this.tiempoOcupado) {
