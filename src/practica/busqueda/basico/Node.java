@@ -118,7 +118,6 @@ public class Node {
 			i++;
 		}
 		
-<<<<<<< HEAD
 		
 		int j = 0;
 		while((check == true) && j < this.trabajadores.size()) {
