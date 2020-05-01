@@ -55,7 +55,11 @@ public class AStar {
 				ArrayList<Trabajador> trabajadoresNuevos = new ArrayList<Trabajador>();
 				for (Trabajador trabajador : trabajadores) {
 					Trabajador trabajadorNuevo = new Trabajador(trabajador.getNombre(), trabajador.getHabPodar(), trabajador.getHabLimpiar(), trabajador.getHabReparar());
-
+					trabajadorNuevo.setTiempoTotalTrabajado(trabajador.getTiempoTotalTrabajado());
+					trabajadorNuevo.setTiempoOcupado(trabajador.getTiempoOcupado());
+					trabajadorNuevo.setArea(trabajador.getArea());
+					// set herramienta
+					
 					if (trabajadorNuevo.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
 						trabajadorNuevo.setTiempoOcupado(0); // "Actualizo" el tiempo y pongo a Antonio libre para realizar la siguiente tarea (la de este estado sucesor)
 						if(!trabajadorNuevo.herramientaCorrecta(tareaOriginal.getTipo())) { // si no tiene la herramienta correcta, la coge del almacen
@@ -116,7 +120,6 @@ public class AStar {
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
 				currentNode.printNodeData(printDebug);
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
-				currentNode.printNodeData(2); // PARA PRUEBAS 
 				
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
 					this.setGoalNode(currentNode);

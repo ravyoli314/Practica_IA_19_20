@@ -101,17 +101,64 @@ public class Node {
 	public boolean equals(Node other) {
 		boolean check = true; 
 		
-		for (Tarea tarea: this.tareas) {
-			if(tarea.getUnidades() > 0)
-				System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+		int i = 0;
+		while(check && i < this.tareas.size()) {
+			Tarea tarea1 = this.tareas.get(i);
+			for (Tarea tarea2: other.getTareas()) {
+				if(!check)
+					break;
+				
+				if(tarea1.getTipo().equals(tarea2.getTipo()) && tarea1.getArea().equals(tarea2.getArea())){ // solo comparo las tareas del mismo tipo y area
+					if(tarea1.getUnidades() != tarea2.getUnidades()) { // dos tareas (mismo area y tipo) se diferencian por sus unidades
+						check = false;
+					}
+					break;
+				}
+			}
+			i++;
 		}
-		System.out.println("");
 		
-		for (Trabajador trabajador: this.trabajadores) {
-			if(trabajador.getNombre().equals("Antonio")) {
-				System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTempoTotalTrabajado());
-				break; }
+		
+		int j = 0;
+		while((check == true) && j < this.trabajadores.size()) {
+			Trabajador trabajador1 = this.trabajadores.get(j);
+			for (Trabajador trabajador2: this.trabajadores) {
+				if(!check)
+					break;
+				
+				if(trabajador1.getNombre().equals(trabajador2.getNombre())) {
+					if((trabajador1.getTiempoTotalTrabajado() != trabajador2.getTiempoTotalTrabajado()) || (trabajador1.getTiempoOcupado() != trabajador2.getTiempoOcupado()) || 
+							!(trabajador1.getArea().equals(trabajador2.getArea()))) {
+						check = false;
+					}
+					/*
+					else if ((trabajador1.getHerramienta() != null && trabajador2.herramientaCorrecta(trabajador1.getHerramienta().getTrabajo())) || 
+							(trabajador2.getHerramienta() != null && trabajador1.herramientaCorrecta(trabajador2.getHerramienta().getTrabajo()))) {
+						check = false;
+					} */
+					break;
+				}
+			}
+			j++;
 		}
+		/*
+		int k = 0;
+		while((check == true) && k < this.herramientas.size()) {
+			Herramienta herramienta1 = this.herramientas.get(k);
+			for (Herramienta herramienta2: this.herramientas) {
+				if(!check)
+					break;
+				
+				if(herramienta1.getNombre().equals(herramienta2.getNombre()) && (herramienta1.getTrabajo().equals(herramienta2.getTrabajo()))) {
+					if(herramienta1.getCantidad() != herramienta2.getCantidad()) {
+						check = false;
+					}
+					break;
+				}
+			}
+			k ++;
+		}
+		*/
 		
 		return check;
 	}
@@ -122,16 +169,16 @@ public class Node {
 	 * @param printDebug. Permite seleccionar cu�ntos mensajes imprimir
 	 */
 	public void printNodeData(int printDebug) { // COMPLETAR Y PONER LOS 3 CASOS DE DEBUG !!!!!!!!!!!!!!!!!!!!!
-		System.out.print("TAREAS PENDIENTES: ");	
+		int tareasPendientes = 0;
 		for (Tarea tarea: this.tareas) {
 			if(tarea.getUnidades() > 0)
-				System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+				tareasPendientes++;
 		}
-		System.out.println("");
+		System.out.println("TAREAS PENDIENTES: "+ tareasPendientes);
 		
 		for (Trabajador trabajador: this.trabajadores) {
 			if(trabajador.getNombre().equals("Antonio")) {
-				System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTempoTotalTrabajado());
+				System.out.println("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado() + " tiempo ocupado: " + trabajador.getTiempoOcupado());
 				break; }
 		}
 		

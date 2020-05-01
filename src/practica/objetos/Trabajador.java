@@ -88,8 +88,11 @@ public class Trabajador {
 	public int getTiempoOcupado() {
 		return tiempoOcupado;
 	}
-	public int getTempoTotalTrabajado() {
+	public int getTiempoTotalTrabajado() {
 		return tiempoTotalTrabajado;
+	}
+	public void setTiempoTotalTrabajado(int t) {
+		this.tiempoTotalTrabajado = t;
 	}
 
 	public void disminuirTiempoOcupado(int tiempo) {
