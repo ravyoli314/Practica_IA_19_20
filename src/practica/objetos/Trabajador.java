@@ -88,7 +88,7 @@ public class Trabajador {
 	public int getTiempoOcupado() {
 		return tiempoOcupado;
 	}
-	public int getTempoTotalTrabajado() {
+	public int getTiempoTotalTrabajado() {
 		return tiempoTotalTrabajado;
 	}
 
