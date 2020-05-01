@@ -3,8 +3,8 @@ package practica.busqueda.basico;
 import java.util.ArrayList;
 import java.util.List;
 
-import practica.busqueda.avanzado.Node;
-import practica.busqueda.avanzado.OpenList;
+import practica.busqueda.basico.Node;
+import practica.busqueda.basico.OpenList;
 import practica.objetos.Herramienta;
 import practica.objetos.Tarea;
 import practica.objetos.Trabajador;

@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import practica.busqueda.avanzado.AStar;
-import practica.busqueda.avanzado.Node;
+import practica.busqueda.basico.AStar;
+import practica.busqueda.basico.Node;
 import practica.json.LectorJSON;
 import practica.objetos.Herramienta;
 import practica.objetos.Tarea;

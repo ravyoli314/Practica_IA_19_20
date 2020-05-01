@@ -2,21 +2,23 @@ package practica.busqueda.avanzado;
 
 import java.util.ArrayList;
 import java.util.List;
+import practica.busqueda.avanzado.Node;
+import practica.busqueda.avanzado.OpenList;
 import practica.objetos.Herramienta;
 import practica.objetos.Tarea;
 import practica.objetos.Trabajador;
 
 /**
- * Clase creada como base para la parte 2 de la práctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
+ * Clase creada como base para la parte 2 de la prï¿½ctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
  *
  * @author Daniel Amigo Herrero
- * @author David Sánchez Pedroche
+ * @author David Sï¿½nchez Pedroche
  *  
  */
 
 public class AStar {
 
-	int printDebug; // 0: nada, 1: información básica, 2: información completa
+	int printDebug; // 0: nada, 1: informaciï¿½n bï¿½sica, 2: informaciï¿½n completa
 
 	private OpenList openList = new OpenList();						// Lista de nodos por explorar
 	private ArrayList<Node> closedList = new ArrayList<Node>();		// Lista de nodos explorados
@@ -25,30 +27,30 @@ public class AStar {
 	private boolean findGoal;										// Se ha encontrado la meta
 
 	/**
-	 * Insertamos en la lista de nodos abiertos los nodos según las acciones que se pueden realizar en este instante
+	 * Insertamos en la lista de nodos abiertos los nodos segï¿½n las acciones que se pueden realizar en este instante
 	 * MODIFICAR
 	 * @param currentNode - el nodo actual
 	 */
 	private void addAdjacentNodes(Node currentNode) {
-		// MODIFICAR para insertar las acciones específicas del problema
+		// MODIFICAR para insertar las acciones especï¿½ficas del problema
 		ArrayList<Trabajador> trabajadores  = currentNode.getTrabajadores();
 		ArrayList<Herramienta> herramientas = currentNode.getHerramientas();
 		ArrayList<Tarea> tareas             = currentNode.getTareas();
 	}
 	
 	/**
-	 * Implementación de A estrella
+	 * Implementaciï¿½n de A estrella
 	 */
 	public double Algorithm() {
-		double initialTime = Double.parseDouble(""+System.currentTimeMillis()); // Para contar el tiempo de ejecución
+		double initialTime = Double.parseDouble(""+System.currentTimeMillis()); // Para contar el tiempo de ejecuciï¿½n
 
 		Node currentNode = null;
 
 		while(!this.openList.isEmpty()) { 				// Recorremos la lista de nodos sin explorar
-			currentNode = this.openList.pullFirst(); 	// Extraemos el primero (la lista esta ordenada segun la funcion de evaluación)
+			currentNode = this.openList.pullFirst(); 	// Extraemos el primero (la lista esta ordenada segun la funcion de evaluaciï¿½n)
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
 				currentNode.printNodeData(printDebug);
-				closedList.add(currentNode); 			// Añadimos dicho nodo a la lista de explorados
+				closedList.add(currentNode); 			// Aï¿½adimos dicho nodo a la lista de explorados
 
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
 					this.setGoalNode(currentNode);
@@ -59,7 +61,7 @@ public class AStar {
 			}
 		}
 		
-		// Para contar el tiempo de ejecución
+		// Para contar el tiempo de ejecuciï¿½n
 		double fin    = Double.parseDouble(""+System.currentTimeMillis());
 		double tiempo = (fin - initialTime) / 1000;
 		return tiempo;
@@ -78,29 +80,29 @@ public class AStar {
 		this.setGoalNode(goalNode);
 		this.setFindGoal(false); 					// No se ha llegado al nodo meta
 
-		// Introducir heurísticas y costes para el nodo inicial. El nodo meta solo tiene heurística
-		initialNode.computeHeuristic(goalNode);	// Coste esperado por la heurística para llegar al nodo final desde el inicial
+		// Introducir heurï¿½sticas y costes para el nodo inicial. El nodo meta solo tiene heurï¿½stica
+		initialNode.computeHeuristic(goalNode);	// Coste esperado por la heurï¿½stica para llegar al nodo final desde el inicial
 		initialNode.setCoste(0);					// el nodo inicial tiene coste cero
-		initialNode.computeEvaluation();			// coste + heurística
+		initialNode.computeEvaluation();			// coste + heurï¿½stica
 		goalNode.computeHeuristic(goalNode);		// Debe ser 0, ya es el nodo final
 
 		// Genera la lista de nodos explorados y sin explorar
 		this.closedList = new ArrayList<Node>();
 		this.openList   = new OpenList();
-		this.openList.insertAtEvaluation(initialNode); // Añadimos a la lista de nodos sin explorar el nodo inicial
+		this.openList.insertAtEvaluation(initialNode); // Aï¿½adimos a la lista de nodos sin explorar el nodo inicial
 	}
 
 
 	/**
-	 * Comprobación de si el nodo ya se ha explorado
+	 * Comprobaciï¿½n de si el nodo ya se ha explorado
 	 * NO MODIFICAR
 	 * @param currentNode
 	 * @return
 	 */
 	private boolean checkNode(Node currentNode) {
 		boolean expandirNodo = true;
-		for (Node node : this.closedList) { // Se observa si el nodo está en la lista de cerrados
-			if(currentNode.equals(node)) {	// Comprueba si la información del nodo es igual
+		for (Node node : this.closedList) { // Se observa si el nodo estï¿½ en la lista de cerrados
+			if(currentNode.equals(node)) {	// Comprueba si la informaciï¿½n del nodo es igual
 				expandirNodo = false;
 				break;
 			}
@@ -110,10 +112,10 @@ public class AStar {
 
 
 	/**
-	 * Método para calcular el camino desde el nodo Inicial hasta el nodo actual
+	 * Mï¿½todo para calcular el camino desde el nodo Inicial hasta el nodo actual
 	 * NO MODIFICAR
 	 * @param currentNode
-	 * @return lista de nodos ordenada, desde el primer nodo al último
+	 * @return lista de nodos ordenada, desde el primer nodo al ï¿½ltimo
 	 */
 	public List<Node> getPath(Node currentNode) {
 		List<Node> path = new ArrayList<Node>();	
@@ -129,7 +131,7 @@ public class AStar {
 
 	/**** Getters y Setters ****/
 	/**
-	 * MODIFICAR y/o AÑADIR si se considera necesario. No es imprescindible, solo si se considera que puede ayudar a la implementación
+	 * MODIFICAR y/o Aï¿½ADIR si se considera necesario. No es imprescindible, solo si se considera que puede ayudar a la implementaciï¿½n
 	 */
 	public Node getInitialNode() {
 		return initialNode;
