@@ -42,7 +42,7 @@ public class MainClass {
 		// Se define el nivel de debug a utilizar: Por argumentos el segundo parámetro.
 		int printDebug; // Nivel de debug. Permite elegir la cantidad de mensajes a imprimir
 		if (args.length > 1) printDebug =  Integer.parseInt(args[1]);
-		else printDebug = 0; // Definir aquí el valor
+		else printDebug = 1; // Definir aquí el valor
 
 		//----------------------------- Se carga el problema -----------------------------//
 		String problemPath = "problema.json"; // Problema en la misma ruta del paquete
