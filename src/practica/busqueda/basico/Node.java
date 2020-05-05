@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import practica.objetos.Herramienta;
 import practica.objetos.Tarea;
+import practica.objetos.Tiempo;
 import practica.objetos.Trabajador;
 
 /**
@@ -88,9 +89,79 @@ public class Node {
 	 */
 	public void computeHeuristic(Node finalNode) {
 		// MODIFICAR para ajustarse a las necesidades del problema
+		
+		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
+		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)
+		
+		// recorrerse todas las tareas pendientes que deberían estar completas acorde con el nodo final 
+		// escoger en cada caso la que esté más cerca (teniendo en cuenta el desplazamientro extra por la herramienta?)
+		
+		int tiempoTotal = 0;
+
+		// ArrayList<Tarea> tareasPendientes = new ArrayList<Tarea>();
+		int areasTotales = 7;
+		int areasPendientes = 0;
+		String visited[] = new String[areasTotales]; // si no es null no se ha visitado
+
+		for (int i = 0; i < this.tareas.size(); i++) {
+			if(this.tareas.get(i).getUnidades() > 0) {
+				String area = this.tareas.get(i).getArea();
+				//boolean insertado = false;
+				int pos = 0;
+				while(pos<visited.length) { // rellenamos el array de visitados con las areas que hay que visitar (los restantes huecos nulos no se tendran en cuenta)
+					if(visited[pos] == null) {
+						visited[pos] = area;
+						areasPendientes ++;
+						break;
+					}
+					if(visited[pos].equals(area)) { // no repito areas 
+						break;
+					}
+					pos++;
+				}
+			}
+		}
+
+		for(int i=0; i<areasPendientes; i++) {
+			if(visited[i] != null) 
+				tiempoTotal += computeHeuristic(i, visited, visited[i]);
+		}
+		
 		this.heuristic = 0;
 	}
 
+	
+	// ----------------------------------------------------------------------------------------------------
+	
+	protected int computeHeuristic(int i, String[] visited, String origen) {
+		System.out.println(i);
+		
+		int tiempoCamino = 0;
+		String origen1 = visited[i];
+		visited[i] = null;
+		int[] adjacents = getAdjacents(i); // devuelve un array con los indices de las areas directamente adyancentes que NO hayan sido visitadas (orden)
+		Tiempo tiempo = new Tiempo();
+		
+		for(int adjV: adjacents) {
+			if(visited[adjV] != null) {
+				tiempoCamino += tiempo.calcularTiempoTrayecto(origen1, visited[adjV]);
+				tiempoCamino += computeHeuristic(adjV, visited, origen);
+			}
+			else {
+				return tiempo.calcularTiempoTrayecto(origen1, origen); // si no quedan adyacentes sin visitar, devuelvo el nombre del area que se ha quedado al final del camino
+			}
+		}
+		return tiempoCamino;
+	}
+	
+	protected int[] getAdjacents(int i) {
+		
+		return null;
+	}
+	
+	// ----------------------------------------------------------------------------------------------------
+	
+	
 	/**
 	 * Comprobaci�n de que la informaci�n de un nodo es equivalente a la de otro nodo
 	 * Solo comparar la informaci�n necesaria para ver si es el mismo estado del problema
@@ -177,12 +248,11 @@ public class Node {
 				if(tarea.getUnidades() > 0)
 					tareasPendientes++;
 			}
-			System.out.print("TAREAS PENDIENTES: " + tareasPendientes + " ");
-			System.out.println("");
+			System.out.println("TAREAS PENDIENTES: " + tareasPendientes + " ");
 			
 			for (Trabajador trabajador: this.trabajadores) {
 				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado());
+					System.out.println("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado());
 					break; }
 			}
 		}

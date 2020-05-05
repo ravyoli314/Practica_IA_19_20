@@ -55,9 +55,10 @@ public class AStar {
 				ArrayList<Trabajador> trabajadoresNuevos = new ArrayList<Trabajador>();
 				for (Trabajador trabajador : trabajadores) {
 					Trabajador trabajadorNuevo = new Trabajador(trabajador.getNombre(), trabajador.getHabPodar(), trabajador.getHabLimpiar(), trabajador.getHabReparar());
+					trabajadorNuevo.setArea(trabajador.getArea());
 					trabajadorNuevo.setTiempoTotalTrabajado(trabajador.getTiempoTotalTrabajado());
 					trabajadorNuevo.setTiempoOcupado(trabajador.getTiempoOcupado());
-					trabajadorNuevo.setArea(trabajador.getArea());
+					
 					// set herramienta
 					
 					if (trabajadorNuevo.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
