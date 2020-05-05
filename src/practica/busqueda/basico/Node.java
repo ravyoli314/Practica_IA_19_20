@@ -127,7 +127,7 @@ public class Node {
 				tiempoTotal += computeHeuristic(i, visited, visited[i]);
 		}
 		
-		this.heuristic = 0;
+		this.heuristic = tiempoTotal;
 	}
 
 	
@@ -139,24 +139,37 @@ public class Node {
 		int tiempoCamino = 0;
 		String origen1 = visited[i];
 		visited[i] = null;
-		int[] adjacents = getAdjacents(i); // devuelve un array con los indices de las areas directamente adyancentes que NO hayan sido visitadas (orden)
+		int[] adjacents = getAdjacents(origen1, visited); // devuelve un array con los indices de las areas directamente adyancentes que NO hayan sido visitadas (orden)
 		Tiempo tiempo = new Tiempo();
 		
+		if(adjacents == null) return tiempo.calcularTiempoTrayecto(origen1, origen); // si no quedan adyacentes sin visitar, devuelvo el nombre del area que se ha quedado al final del camino
+	
 		for(int adjV: adjacents) {
 			if(visited[adjV] != null) {
 				tiempoCamino += tiempo.calcularTiempoTrayecto(origen1, visited[adjV]);
 				tiempoCamino += computeHeuristic(adjV, visited, origen);
 			}
-			else {
-				return tiempo.calcularTiempoTrayecto(origen1, origen); // si no quedan adyacentes sin visitar, devuelvo el nombre del area que se ha quedado al final del camino
-			}
 		}
 		return tiempoCamino;
 	}
 	
-	protected int[] getAdjacents(int i) {
+	protected int[] getAdjacents(String origen, String[] visited) {
+		Tiempo tiempo = new Tiempo();
+		ArrayList<Integer> dynamicAdj = new ArrayList<>();
 		
-		return null;
+		for(int i = 0; i < visited.length; i++) {
+			if(visited[i] != null && tiempo.calcularTiempoTrayecto(origen, visited[i]) == 5) {
+				dynamicAdj.add(i); // Si es un area adyacente, añado su índice correspondiente de visited
+			}
+		}
+		
+		if(dynamicAdj.size() == 0) return null;
+		
+		int[] arrayAdjacents = new int[dynamicAdj.size()];
+		for(int i = 0; i < arrayAdjacents.length; i++) {
+			arrayAdjacents[i] = dynamicAdj.get(i);
+		}
+		return arrayAdjacents;
 	}
 	
 	// ----------------------------------------------------------------------------------------------------
