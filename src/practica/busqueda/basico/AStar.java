@@ -96,7 +96,7 @@ public class AStar {
 				sucesor.computeHeuristic2(this.goalNode);
 				sucesor.computeEvaluation(); 
 				// ---------------------------------------------------------------
-				//currentNode.setNextNode(sucesor); 
+				sucesor.setParent(currentNode);
 				// sucesor.printNodeData(printDebug);
 				if(checkNode(sucesor)) openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
@@ -105,7 +105,7 @@ public class AStar {
 		if(tareasTerminadas) { // Si no quedan tareas pendientes, el único nodo sucesor es el nodo meta (que tendrá los valores reseteados)
 			Node sucesor = new Node(goalNode);
 			// la heurística debería dar 0
-			currentNode.setNextNode(sucesor);
+			sucesor.setParent(currentNode);
 			openList.insertAtEvaluation(sucesor);
 		}
 	}
@@ -122,10 +122,7 @@ public class AStar {
 			currentNode = this.openList.pullFirst(); 	// Extraemos el primero (la lista esta ordenada segun la funcion de evaluaci�n)
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
 				System.out.println(" ");
-				System.out.println(" ---- CURRENT NODE ----");
 				currentNode.printNodeData(printDebug);
-				System.out.println(" ");
-				System.out.println(" ---- sucesores ----");
 
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
 
@@ -156,7 +153,7 @@ public class AStar {
 		String ordenTareas = "";
 		List<Node> path = getPath(currentNode);
 		for (Node node:path) {	
-			ArrayList<Trabajador> trabajadores= currentNode.getTrabajadores();
+			ArrayList<Trabajador> trabajadores= node.getTrabajadores();
 			for (Trabajador trabajador : trabajadores) {
 				if (trabajador.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
 					String herramienta = "";
