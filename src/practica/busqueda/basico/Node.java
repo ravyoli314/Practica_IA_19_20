@@ -182,10 +182,10 @@ public class Node {
 		int tiempoCamino = 0;
 		String origen1 = visited[i];
 		visited[i] = null;
-		int[] adjacents = getAdjacents(origen1, visited); // devuelve un array con los indices de las areas directamente adyancentes que NO hayan sido visitadas (orden)
+		int[] adjacents = getAdjacents(origen1, visited); // devuelve un array con los indices de las areas directamente adyancentes que NO hayan sido visitadas
 		Tiempo tiempo = new Tiempo();
 		
-		if(adjacents == null) return tiempo.calcularTiempoTrayecto(origen1, origen); // si no quedan adyacentes sin visitar, devuelvo el nombre del area que se ha quedado al final del camino
+		if(adjacents == null) return tiempo.calcularTiempoTrayecto(origen1, origen); // si no quedan adyacentes sin visitar, devuelvo el tiempo de trayecto de la vuelta al nodo de origen
 	
 		for(int adjV: adjacents) {
 			if(visited[adjV] != null) {

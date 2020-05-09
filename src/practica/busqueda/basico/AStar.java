@@ -95,12 +95,12 @@ public class AStar {
 				
 				Node sucesor = new Node(currentNode, herramientasNuevas, trabajadoresNuevos, tareasNuevas);
 				sucesor.setCoste(coste);
-				sucesor.computeHeuristic(this.goalNode);
+				sucesor.computeHeuristic2(this.goalNode);
 				sucesor.computeEvaluation(); 
 				// ---------------------------------------------------------------
 				//currentNode.setNextNode(sucesor); 
-				sucesor.printNodeData(printDebug);
-				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
+				// sucesor.printNodeData(printDebug);
+				if(checkNode(sucesor)) openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
 		} // for	
 		
@@ -128,6 +128,7 @@ public class AStar {
 				currentNode.printNodeData(printDebug);
 				System.out.println(" ");
 				System.out.println(" ---- sucesores ----");
+
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
 
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
@@ -153,6 +154,28 @@ public class AStar {
 		}
 	}
 	
+	public void printPath(Node currentNode) {
+		String ordenTareas = "";
+		List<Node> path = getPath(currentNode);
+		for (Node node:path) {	
+			ArrayList<Trabajador> trabajadores= currentNode.getTrabajadores();
+			for (Trabajador trabajador : trabajadores) {
+				if (trabajador.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
+					String herramienta = "";
+					if(trabajador.getHerramienta() == null) {
+						herramienta = "sin herramienta";
+					} else herramienta = trabajador.getHerramienta().getTrabajo();
+					ordenTareas += trabajador.getArea() + " " + herramienta + ", ";
+					break;
+				}
+			}
+		}
+
+		System.out.println("ORDEN tareas " + ordenTareas);		
+		
+		
+	}
+
 	
 	/**
 	 * Constructor del algoritmo, obtiene el nodo de inicio y el nodo meta

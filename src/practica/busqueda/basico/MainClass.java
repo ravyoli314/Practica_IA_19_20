@@ -104,7 +104,7 @@ public class MainClass {
 		for (Node node:path) {
 			node.printNodeData(2);	// printDebug = 2
 		}
-		System.out.println();
+		System.out.println();		
 	}
 
 	/**
