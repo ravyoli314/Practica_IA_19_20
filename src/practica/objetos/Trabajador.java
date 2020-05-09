@@ -104,24 +104,12 @@ public class Trabajador {
 
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) { // aqui no tengo en cuenta la mejora de la herramienta
 		int tiempoOcupado;
-		switch(tipoTarea) {
-		case "podar":
-			tiempoOcupado= (unidadesTrabajo * 60) / getHabPodar();
-			break;
-		case "limpiar":
-			tiempoOcupado= (unidadesTrabajo * 60 ) / getHabLimpiar();
-			break;
-		case "reparar":
-			tiempoOcupado= (unidadesTrabajo * 60 ) / getHabReparar();
-			break;
-		default:
-			tiempoOcupado = 0;
-		}
+		tiempoOcupado = tiempo.tiempoTarea(tipoTarea, unidadesTrabajo, getHabPodar(), getHabLimpiar(), getHabReparar());
 		// el tiempo que tarde en desplazarse lo calcula el setArea
 		this.tiempoOcupado += tiempoOcupado;
 		this.tiempoTotalTrabajado += tiempoOcupado;
 	}
-
+	
 	public void cogerHerramienta(Herramienta herramientaNueva) {
 		setArea("A"); // se encarga de añadirle el tiempo de desplazamiento (0 si ya esta en el almacen)
 		this.herramienta = herramientaNueva;

@@ -1,6 +1,26 @@
 package practica.objetos;
 
 public class Tiempo {
+	
+	public int tiempoTarea(String tipoTarea, int unidadesTrabajo, int habPodar, int habLimpiar, int habReparar) { // aqui no tengo en cuenta la mejora de la herramienta
+		int tiempoOcupado;
+		switch(tipoTarea) {
+		case "podar":
+			tiempoOcupado= (unidadesTrabajo * 60) / habPodar;
+			break;
+		case "limpiar":
+			tiempoOcupado= (unidadesTrabajo * 60 ) / habLimpiar;
+			break;
+		case "reparar":
+			tiempoOcupado= (unidadesTrabajo * 60 ) / habReparar;
+			break;
+		default:
+			tiempoOcupado = 0;
+		}
+		
+		return tiempoOcupado;
+	}
+
 
 	public int calcularTiempoTrayecto(String origen, String destino) {
 		int tiempo = 0;
