@@ -97,8 +97,7 @@ public class AStar {
 				sucesor.computeEvaluation(); 
 				// ---------------------------------------------------------------
 				sucesor.setParent(currentNode);
-				// sucesor.printNodeData(printDebug);
-				if(checkNode(sucesor)) openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
+				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
 		} // for	
 		
