@@ -90,23 +90,68 @@ public class Node {
 	 * @param finalNode - El nodo sobre el que calcular la heur�stica
 	 * this.heuristica  - Resultado
 	 */
+	
+
 	public void computeHeuristic(Node finalNode) {
+		
+		int habPodar = 0;
+		int habLimpiar = 0;
+		int habReparar = 0;
+		
+		for (Trabajador trabajador : this.trabajadores) {
+			if (trabajador.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
+				habPodar = trabajador.getHabPodar();
+				habLimpiar = trabajador.getHabLimpiar();
+				habReparar = trabajador.getHabReparar();
+				break;
+			}
+		}	
+		
+		Tiempo tiempo = new Tiempo();
+		int tiempoTareas = 0;
+		for (int i = 0; i < this.tareas.size(); i++) {
+			if(this.tareas.get(i).getUnidades() > 0) {
+				tiempoTareas += tiempo.tiempoTarea(this.tareas.get(i).getTipo(), this.tareas.get(i).getUnidades(), habPodar, habLimpiar, habReparar);
+			}
+		}
+
+		this.heuristic = tiempoTareas;
+		
+	}
+	
+	
+// ORIGINAL :---------------------------------	
+	public void computeHeuristic2(Node finalNode) {
 		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
 		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)
 		
 		// recorrerse todas las tareas pendientes que deberían estar completas acorde con el nodo final 
 		// escoger en cada caso la que esté más cerca (teniendo en cuenta el desplazamientro extra por la herramienta?)
+	
+		int habPodar = 0;
+		int habLimpiar = 0;
+		int habReparar = 0;
 		
-		int tiempoTotal = 0;
-		// ArrayList<Tarea> tareasPendientes = new ArrayList<Tarea>();
+		for (Trabajador trabajador : this.trabajadores) {
+			if (trabajador.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
+				habPodar = trabajador.getHabPodar();
+				habLimpiar = trabajador.getHabLimpiar();
+				habReparar = trabajador.getHabReparar();
+				break;
+			}
+		}	
+		
+		Tiempo tiempo = new Tiempo();
+		int tiempoTareas = 0;
+		int tiempoCamino= 0;
 		int areasTotales = 7;
 		int areasPendientes = 0;
 		String visited[] = new String[areasTotales]; // si no es null no se ha visitado
 
 		for (int i = 0; i < this.tareas.size(); i++) {
 			if(this.tareas.get(i).getUnidades() > 0) {
+				tiempoTareas += tiempo.tiempoTarea(this.tareas.get(i).getTipo(), this.tareas.get(i).getUnidades(), habPodar, habLimpiar, habReparar);
 				String area = this.tareas.get(i).getArea();
-				//boolean insertado = false;
 				int pos = 0;
 				while(pos<visited.length) { // rellenamos el array de visitados con las areas que hay que visitar (los restantes huecos nulos no se tendran en cuenta)
 					if(visited[pos] == null) {
@@ -124,10 +169,10 @@ public class Node {
 
 		for(int i=0; i<areasPendientes; i++) {
 			if(visited[i] != null) 
-				tiempoTotal += computeHeuristic(i, visited, visited[i]);
+				tiempoCamino += computeHeuristic(i, visited, visited[i]);
 		}
 		
-		this.heuristic = tiempoTotal;
+		this.heuristic = tiempoCamino + tiempoTareas;
 	}
 
 	
@@ -250,26 +295,29 @@ public class Node {
 	 * Impresi�n de la informaci�n del nodo
 	 * @param printDebug. Permite seleccionar cu�ntos mensajes imprimir
 	 */
-	public void printNodeData(int printDebug) { // COMPLETAR Y PONER LOS 3 CASOS DE DEBUG !!!!!!!!!!!!!!!!!!!!!
+	public void printNodeData(int printDebug) {
+		
 		System.out.println("");
 		
 		if(printDebug == 1) {
+			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
 			int tareasPendientes = 0;
 			for (Tarea tarea: this.tareas) {
 				if(tarea.getUnidades() > 0)
 					tareasPendientes++;
 			}
-			System.out.println("TAREAS PENDIENTES: " + tareasPendientes + " ");
+			System.out.println("Tareas pendientes: " + tareasPendientes + " ");
 			
 			for (Trabajador trabajador: this.trabajadores) {
 				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.println("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado());
+					System.out.println("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
 					break; }
 			}
 		}
 		
 		else if(printDebug == 2) {
-			System.out.print(" TAREAS PENDIENTES: ");
+			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
+			System.out.println("Tareas pendientes: ");
 			for (Tarea tarea: this.tareas) {
 				if(tarea.getUnidades() > 0)
 					System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
@@ -278,7 +326,7 @@ public class Node {
 			
 			for (Trabajador trabajador: this.trabajadores) {
 				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.print("TIEMPO TRABAJADO POR ANTONIO: " + trabajador.getTiempoTotalTrabajado());
+					System.out.print("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
 					break; }
 			}
 			

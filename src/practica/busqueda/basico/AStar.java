@@ -40,7 +40,6 @@ public class AStar {
 		ArrayList<Tarea> tareas             = currentNode.getTareas();
 
 		Double coste = 0.0;
-		//Tiempo tiempo;
 		boolean tareasTerminadas = true;
 		for(Tarea tareaOriginal : tareas) { // Un estado sucesor distinto por cada tarea pendiente
 			if(tareaOriginal.getUnidades() > 0) {
@@ -77,7 +76,7 @@ public class AStar {
 						trabajadorNuevo.setArea(tareaOriginal.getArea());
 						coste = (double)trabajadorNuevo.getTiempoTotalTrabajado();
 						
-						System.out.println("Tiempo total: " + trabajadorNuevo.getNombre() + " " + trabajadorNuevo.getTiempoTotalTrabajado() + " " + trabajadorNuevo.getTiempoOcupado());
+						//System.out.println("Tiempo total: " + trabajadorNuevo.getNombre() + " " + trabajadorNuevo.getTiempoTotalTrabajado() + " " + trabajadorNuevo.getTiempoOcupado());
 					}
 					
 					trabajadoresNuevos.add(trabajadorNuevo);
@@ -99,7 +98,8 @@ public class AStar {
 				sucesor.computeHeuristic(this.goalNode);
 				sucesor.computeEvaluation(); 
 				// ---------------------------------------------------------------
-				currentNode.setNextNode(sucesor); 
+				//currentNode.setNextNode(sucesor); 
+				sucesor.printNodeData(printDebug);
 				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
 		} // for	
@@ -123,7 +123,11 @@ public class AStar {
 		while(!this.openList.isEmpty()) { 				// Recorremos la lista de nodos sin explorar
 			currentNode = this.openList.pullFirst(); 	// Extraemos el primero (la lista esta ordenada segun la funcion de evaluaci�n)
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
+				System.out.println(" ");
+				System.out.println(" ---- CURRENT NODE ----");
 				currentNode.printNodeData(printDebug);
+				System.out.println(" ");
+				System.out.println(" ---- sucesores ----");
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
 
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
@@ -141,7 +145,15 @@ public class AStar {
 		return tiempo;
 	}
 
-
+	public void printClosedList() {
+		System.out.println(" ClosedList : ");
+		for(int i = 0; i< this.closedList.size(); i++) {
+			System.out.print("nodo " + i + "; ");
+			closedList.get(i).printNodeData(1);
+		}
+	}
+	
+	
 	/**
 	 * Constructor del algoritmo, obtiene el nodo de inicio y el nodo meta
 	 * NO MODIFICAR
