@@ -93,7 +93,7 @@ public class Node {
 	 */
 	
 
-	public void computeHeuristic(Node finalNode) {
+	public void computeHeuristic2(Node finalNode) {
 		
 		int habPodar = 0;
 		int habLimpiar = 0;
@@ -122,7 +122,7 @@ public class Node {
 	
 	
 // ORIGINAL (Antiguo) :---------------------------------	
-	public void computeHeuristic2(Node finalNode) {
+	public void computeHeuristic(Node finalNode) {
 		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
 		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)
 		
