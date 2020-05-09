@@ -75,8 +75,6 @@ public class AStar {
 						trabajadorNuevo.tiempoTarea(tareaOriginal.getTipo(), tareaOriginal.getUnidades());
 						trabajadorNuevo.setArea(tareaOriginal.getArea());
 						coste = (double)trabajadorNuevo.getTiempoTotalTrabajado();
-						
-						//System.out.println("Tiempo total: " + trabajadorNuevo.getNombre() + " " + trabajadorNuevo.getTiempoTotalTrabajado() + " " + trabajadorNuevo.getTiempoOcupado());
 					}
 					
 					trabajadoresNuevos.add(trabajadorNuevo);

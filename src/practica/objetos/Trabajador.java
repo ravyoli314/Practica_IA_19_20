@@ -119,10 +119,7 @@ public class Trabajador {
 	public boolean herramientaCorrecta(String tarea) { // comparo que la herramienta del trabajador no sea nula y sea la de la tarea a realizar
 		if(this.herramienta == null)
 			return false;
-		else if(this.herramienta.getTrabajo().equals(tarea))
-			return true;
-		else 
-			return false;
+		else return this.herramienta.getTrabajo().equals(tarea);
 	}
 
 	public void terminarDia() {

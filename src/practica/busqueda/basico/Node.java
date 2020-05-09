@@ -62,6 +62,7 @@ public class Node {
 			trabajador.setArea(original.trabajadores.get(i).getArea());
 			trabajador.setTiempoTotalTrabajado(original.trabajadores.get(i).getTiempoTotalTrabajado());
 			trabajador.setTiempoOcupado(original.trabajadores.get(i).getTiempoOcupado());
+			trabajador.setHerramienta(original.trabajadores.get(i).getHerramienta());
 			trabajadores.add(trabajador);
 		}
 		this.trabajadores = trabajadores;
