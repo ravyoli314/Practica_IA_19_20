@@ -103,8 +103,7 @@ public class Trabajador {
 	}
 
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo) { // aqui no tengo en cuenta la mejora de la herramienta
-		int tiempoOcupado;
-		tiempoOcupado = tiempo.tiempoTarea(tipoTarea, unidadesTrabajo, getHabPodar(), getHabLimpiar(), getHabReparar());
+		int tiempoOcupado = tiempo.tiempoTarea(tipoTarea, unidadesTrabajo, getHabPodar(), getHabLimpiar(), getHabReparar());
 		// el tiempo que tarde en desplazarse lo calcula el setArea
 		this.tiempoOcupado += tiempoOcupado;
 		this.tiempoTotalTrabajado += tiempoOcupado;
@@ -142,21 +141,7 @@ public class Trabajador {
 	/**************** PARTE 2. INFERENCIA AVANZADO ******************************/
 
 	public void tiempoTarea(String tipoTarea, int unidadesTrabajo, int mejora) { // Tengo en cuenta la MEJORA de la herramienta
-		int tiempoTrabajando; //tiempo en realizar la tarea.
-		switch(tipoTarea) {
-		case "podar":
-			tiempoTrabajando= (unidadesTrabajo * 60) / (getHabPodar() + mejora);
-			break;
-		case "limpiar":
-			tiempoTrabajando= (unidadesTrabajo * 60 ) / (getHabLimpiar() + mejora);
-			break;
-		case "reparar":
-			tiempoTrabajando= (unidadesTrabajo * 60 ) / (getHabReparar() + mejora);
-			break;
-		default:
-			tiempoTrabajando = 0;
-		}
-
+		int tiempoTrabajando = tiempo.tiempoTarea(tipoTarea, unidadesTrabajo, getHabPodar(), getHabLimpiar(), getHabReparar(), mejora);
 		this.tiempoOcupado += tiempoTrabajando;
 		this.tiempoTotalTrabajado += tiempoTrabajando;
 	}
@@ -165,7 +150,6 @@ public class Trabajador {
 		int tiempoDesplazamiento = (int) (tiempo.calcularTiempoTrayecto(this.area, areaTarea) + (tiempo.calcularTiempoTrayecto(this.area, areaTarea)/5) * peso);
 		this.tiempoOcupado += tiempoDesplazamiento; 
 		this.tiempoTotalTrabajado += tiempoDesplazamiento;
-		System.out.println(this.nombre + " tiempo trayecto: " + tiempoDesplazamiento);
 		this.area = areaTarea;
 	}
 	

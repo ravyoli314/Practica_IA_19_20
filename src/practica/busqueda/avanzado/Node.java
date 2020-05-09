@@ -4,42 +4,43 @@ import java.util.ArrayList;
 
 import practica.objetos.Herramienta;
 import practica.objetos.Tarea;
+import practica.objetos.Tiempo;
 import practica.objetos.Trabajador;
 
 /**
- * Clase creada como base para la parte 2 de la práctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
+ * Clase creada como base para la parte 2 de la prï¿½ctica 2019-2020 de Inteligencia Artificial, UC3M, Colmenarejo
  *
  * @author Daniel Amigo Herrero
- * @author David Sánchez Pedroche
+ * @author David Sï¿½nchez Pedroche
  * 
  */
 
 public class Node {
 	private double cost;							// Valor del coste de llegada al nodo
-	private double heuristic;						// Valor de la heurística del nodo
-	private double evaluation;						// Valor de la evaluación
+	private double heuristic;						// Valor de la heurï¿½stica del nodo
+	private double evaluation;						// Valor de la evaluaciï¿½n
 	private Node parent;							// Nodo padre del arbol A*
-	private Node nextNodeList = null;				// Para la gestión de la lista
+	private Node nextNodeList = null;				// Para la gestiï¿½n de la lista
 	ArrayList<Herramienta> herramientas;
 	ArrayList<Trabajador>  trabajadores;
 	ArrayList<Tarea>       tareas;
-	// Añadir más variables si se desea
+	// Aï¿½adir mï¿½s variables si se desea
 
 	/**
 	 * MODIFICAR
 	 * Constructor para introducir un nuevo nodo en el algoritmo A estrella
 	 */
 	public Node(Node parentNode, ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {
-		this.parent       = parentNode;  // padre en el árbol A*
+		this.parent       = parentNode;  // padre en el ï¿½rbol A*
 		this.herramientas = herramientas;
 		this.trabajadores = trabajadores;
 		this.tareas       = tareas;
-		// Añadir más variables si se desea
+		// Aï¿½adir mï¿½s variables si se desea
 	}
 
 	/**
 	 * MODIFICAR
-	 * Constructor auxiliar para la implementación del algoritmo. Genera una copia de un nodo para introducirla en la OpenList
+	 * Constructor auxiliar para la implementaciï¿½n del algoritmo. Genera una copia de un nodo para introducirla en la OpenList
 	 */ 
 	public Node(Node original) {
 		// Incluir todas las variables del nodo
@@ -48,19 +49,25 @@ public class Node {
 		this.evaluation   = original.evaluation;
 		this.parent       = original.parent;
 		this.nextNodeList = original.nextNodeList;
-		// Añadir más variables si se desea
+		// Aï¿½adir mï¿½s variables si se desea
 
 		// Se copian los objetos de los ArrayList a uno nuevo de este Nodo
-		// Si se necesita añadir valores variables, como un ID, utilizar setters
+		// Si se necesita aï¿½adir valores variables, como un ID, utilizar setters
 		ArrayList<Trabajador> trabajadores = new ArrayList<Trabajador>();
 		for (int i = 0; i < original.trabajadores.size(); i++) {
 			Trabajador trabajador = new Trabajador(original.trabajadores.get(i).getNombre(), original.trabajadores.get(i).getHabPodar(), original.trabajadores.get(i).getHabLimpiar(), original.trabajadores.get(i).getHabReparar());
+			trabajador.setArea(original.trabajadores.get(i).getArea());
+			trabajador.setTiempoTotalTrabajado(original.trabajadores.get(i).getTiempoTotalTrabajado());
+			trabajador.setTiempoOcupado(original.trabajadores.get(i).getTiempoOcupado());
+			trabajador.setHerramienta(original.trabajadores.get(i).getHerramienta());
 			trabajadores.add(trabajador);
 		}
 		this.trabajadores = trabajadores;
 		ArrayList<Herramienta> herramientas = new ArrayList<Herramienta>();
 		for (int i = 0; i < original.herramientas.size(); i++) {
 			Herramienta herramienta = new Herramienta(original.herramientas.get(i).getNombre(), original.herramientas.get(i).getTrabajo(), original.herramientas.get(i).getPeso(), original.herramientas.get(i).getMejora(), original.herramientas.get(i).getCantidad());
+			herramienta.setCantidad(original.herramientas.get(i).getCantidad());
+			herramienta.setMaxCantidad(original.herramientas.get(i).getMaxCantidad());
 			herramientas.add(herramienta);
 		}
 		this.herramientas = herramientas;
@@ -80,38 +87,174 @@ public class Node {
 	/**
 	 *  Calcula el valor de la heuristica del problema para el nodo 
 	 *  MODIFICAR
-	 * @param finalNode - El nodo sobre el que calcular la heurística
+	 * @param finalNode - El nodo sobre el que calcular la heurï¿½stica
 	 * this.heuristica  - Resultado
 	 */
 	public void computeHeuristic(Node finalNode) {
-		// MODIFICAR para ajustarse a las necesidades del problema
-		this.heuristic = 0;
+
+		// calcular la heuristica ?? Puedo hacer la media de las unidades de cada tarea y habilidades
+		int habPodar = 0;
+		int habLimpiar = 0;
+		int habReparar = 0;
+
+		int unidadesLimpiar = 0;
+		int unidadesPodar = 0;
+		int unidadesReparar = 0;
+		
+		//OJO NO TENGO EN CUENTA LA MEJORA, PESO, NI TRAYECTO (y si no es admisible???)
+		for(Tarea tarea : this.tareas) {
+			if(tarea.getUnidades() > 0) {
+				switch(tarea.getTipo()) {
+				case "podar":
+					unidadesPodar += tarea.getUnidades();
+					break;
+				case "limpiar":
+					unidadesLimpiar += tarea.getUnidades();
+					break;
+				case "reparar":
+					unidadesReparar += tarea.getUnidades();
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		
+		for (Trabajador trabajador : this.trabajadores) {
+			habPodar += trabajador.getHabPodar();
+			habLimpiar += trabajador.getHabLimpiar();
+			habReparar += trabajador.getHabReparar();
+		}	
+
+		Tiempo tiempo = new Tiempo();		
+		this.heuristic = tiempo.tiempoTarea(unidadesPodar, habPodar) + tiempo.tiempoTarea(unidadesLimpiar, habLimpiar) + tiempo.tiempoTarea(unidadesReparar, habReparar);
+		
 	}
 
 	/**
-	 * Comprobación de que la información de un nodo es equivalente a la de otro nodo
-	 * Solo comparar la información necesaria para ver si es el mismo estado del problema
+	 * Comprobaciï¿½n de que la informaciï¿½n de un nodo es equivalente a la de otro nodo
+	 * Solo comparar la informaciï¿½n necesaria para ver si es el mismo estado del problema
 	 * 
 	 * @param other - el nodo con el que comparar this
 	 * @return true: son iguales. false: no lo son
 	 */
 	public boolean equals(Node other) {
-		boolean check = true; // 
-		// MODIFICAR la condición para ajustarse a las necesidades del problema
+
+		boolean check = true; 
+		
+		int i = 0;
+		while(check && i < this.tareas.size()) {
+			Tarea tarea1 = this.tareas.get(i);
+			for (Tarea tarea2: other.getTareas()) {
+				if(!check)
+					break;
+				
+				if(tarea1.getTipo().equals(tarea2.getTipo()) && tarea1.getArea().equals(tarea2.getArea())){ // solo comparo las tareas del mismo tipo y area
+					if(tarea1.getUnidades() != tarea2.getUnidades()) { // dos tareas (mismo area y tipo) se diferencian por sus unidades
+						check = false;
+					}
+					break;
+				}
+			}
+			i++;
+		}
+		
+		
+		int j = 0;
+		while((check == true) && j < this.trabajadores.size()) {
+			Trabajador trabajador1 = this.trabajadores.get(j);
+			for (Trabajador trabajador2: this.trabajadores) {
+				if(!check)
+					break;
+				
+				if(trabajador1.getNombre().equals(trabajador2.getNombre())) {
+					if((trabajador1.getTiempoTotalTrabajado() != trabajador2.getTiempoTotalTrabajado()) || (trabajador1.getTiempoOcupado() != trabajador2.getTiempoOcupado()) || 
+							!(trabajador1.getArea().equals(trabajador2.getArea()))) {
+						check = false;
+					}
+					/*
+					else if ((trabajador1.getHerramienta() != null && trabajador2.herramientaCorrecta(trabajador1.getHerramienta().getTrabajo())) || 
+							(trabajador2.getHerramienta() != null && trabajador1.herramientaCorrecta(trabajador2.getHerramienta().getTrabajo()))) {
+						check = false;
+					} */
+					break;
+				}
+			}
+			j++;
+		}
+		/*
+		int k = 0;
+		while((check == true) && k < this.herramientas.size()) {
+			Herramienta herramienta1 = this.herramientas.get(k);
+			for (Herramienta herramienta2: this.herramientas) {
+				if(!check)
+					break;
+				
+				if(herramienta1.getNombre().equals(herramienta2.getNombre()) && (herramienta1.getTrabajo().equals(herramienta2.getTrabajo()))) {
+					if(herramienta1.getCantidad() != herramienta2.getCantidad()) {
+						check = false;
+					}
+					break;
+				}
+			}
+			k ++;
+		}
+		*/
+		
 		return check;
 	}
 
 
 	/**
-	 * Impresión de la información del nodo
-	 * @param printDebug. Permite seleccionar cuántos mensajes imprimir
+	 * Impresiï¿½n de la informaciï¿½n del nodo
+	 * @param printDebug. Permite seleccionar cuï¿½ntos mensajes imprimir
 	 */
 	public void printNodeData(int printDebug) {
+
+		System.out.println("");
 		
+		if(printDebug == 1) {
+			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
+			int tareasPendientes = 0;
+			for (Tarea tarea: this.tareas) {
+				if(tarea.getUnidades() > 0)
+					tareasPendientes++;
+			}
+			System.out.println("Tareas pendientes: " + tareasPendientes + " ");
+			
+			for (Trabajador trabajador: this.trabajadores) {
+				if(trabajador.getNombre().equals("Antonio")) {
+					System.out.println("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
+					break; }
+			}
+		}
+		
+		else if(printDebug == 2) {
+			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
+			System.out.println("Tareas pendientes: ");
+			for (Tarea tarea: this.tareas) {
+				if(tarea.getUnidades() > 0)
+					System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+			}
+			System.out.println("");
+			
+			for (Trabajador trabajador: this.trabajadores) {
+				if(trabajador.getNombre().equals("Antonio")) {
+					System.out.print("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
+					break; }
+			}
+			
+		}
+		
+		else if(printDebug == 0) {
+			System.out.println(" nada ");
+		}
+		
+		else System.out.println("error");
 	}
 
 	/**
-	 * Ejecuta la función de evaluacion del problema para el nodo. IMPORTANTE: ejecutar después el cálculo del coste y heurística
+	 * Ejecuta la funciï¿½n de evaluacion del problema para el nodo. IMPORTANTE: ejecutar despuï¿½s el cï¿½lculo del coste y heurï¿½stica
 	 */
 	public void computeEvaluation() {
 		this.evaluation = this.cost + this.heuristic; 
@@ -119,7 +262,7 @@ public class Node {
 
 	/**** Getters y Setters ****/
 	/**
-	 * MODIFICAR si se considera necesario. No es imprescindible, solo si consideras que puede ayudar a tu implementación
+	 * MODIFICAR si se considera necesario. No es imprescindible, solo si consideras que puede ayudar a tu implementaciï¿½n
 	 */
 	public double getEvaluation() {
 		return evaluation;

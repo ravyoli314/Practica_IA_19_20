@@ -120,9 +120,7 @@ public class AStar {
 		while(!this.openList.isEmpty()) { 				// Recorremos la lista de nodos sin explorar
 			currentNode = this.openList.pullFirst(); 	// Extraemos el primero (la lista esta ordenada segun la funcion de evaluaci�n)
 			if(checkNode(currentNode)) {				// Si el nodo ya se ha visitado con un coste menor (esta en la lista de explorados) lo ignoramos
-				System.out.println(" ");
 				currentNode.printNodeData(printDebug);
-
 				closedList.add(currentNode); 			// A�adimos dicho nodo a la lista de explorados
 
 				if(this.getGoalNode().equals(currentNode)) {	// Si es el nodo meta hemos acabado y no hace falta continuar
@@ -155,8 +153,10 @@ public class AStar {
 			closedList++;
 		}
 		totalNode = closedList + openList.getSize();
-		System.out.println("El número total de nodos visitados es : " + totalNode + 
+		System.out.println("El número total de nodos expandidos es : " + totalNode + 
 				", han sido visitados " + closedList + " y no han sido visitados " + openList.getSize());
+		System.out.print("Antonio ha completado las tareas en el siguiente orden: ");
+		printPath(goalNode);
 	}
 	
 	public void printPath(Node currentNode) {
@@ -176,9 +176,7 @@ public class AStar {
 			}
 		}
 
-		System.out.println("ORDEN tareas " + ordenTareas);		
-		
-		
+		System.out.println(ordenTareas);		
 	}
 
 	

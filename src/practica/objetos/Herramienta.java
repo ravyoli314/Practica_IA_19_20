@@ -69,6 +69,9 @@ public class Herramienta {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}	
+	public void setMaxCantidad(int cantidad) {
+		this.MaxCantidad = cantidad;
+	}
 	public int getMaxCantidad() {
 		return MaxCantidad;
 	}

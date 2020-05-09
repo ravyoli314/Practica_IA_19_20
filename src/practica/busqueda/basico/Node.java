@@ -146,9 +146,7 @@ public class Node {
 		this.heuristic = tiempoCamino + tiempoTareas;
 	}
 
-	
-	// ----------------------------------------------------------------------------------------------------
-	
+		
 	protected int computeHeuristic(int i, String[] visited, String origen) {		
 		int tiempoCamino = 0;
 		String origen1 = visited[i];
