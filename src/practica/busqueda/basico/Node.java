@@ -121,7 +121,7 @@ public class Node {
 	}
 	
 	
-// ORIGINAL :---------------------------------	
+// ORIGINAL (Antiguo) :---------------------------------	
 	public void computeHeuristic2(Node finalNode) {
 		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
 		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)

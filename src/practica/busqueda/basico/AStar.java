@@ -139,13 +139,23 @@ public class AStar {
 		double tiempo = (fin - initialTime) / 1000;
 		return tiempo;
 	}
-
+	
+	/*
+	public void printOpenList() {
+		System.out.println("OpenListTotal : " + this.openList.getSize());
+	}
+	*/
+	
 	public void printClosedList() {
-		System.out.println(" ClosedList : ");
+		int closedListNode = 0;
+		//System.out.println(" ClosedList : ");
+		
 		for(int i = 0; i< this.closedList.size(); i++) {
-			System.out.print("nodo " + i + "; ");
+			System.out.println("Nodo " + i + "; ");
 			closedList.get(i).printNodeData(1);
+			closedListNode++;
 		}
+		System.out.println("El número de nodos visitados es : " + closedListNode);
 	}
 	
 	public void printPath(Node currentNode) {

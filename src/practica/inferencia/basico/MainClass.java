@@ -105,12 +105,27 @@ public class MainClass {
 	 * @param trabajadores
 	 * @param tareas
 	 */
-	public static void printState(ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {
-		System.out.println("************** IMPRESION DEL ESTADO **************");
-		for (int i = 0; i < herramientas.size(); i++) herramientas.get(i).printHerramienta();
-		for (int i = 0; i < trabajadores.size(); i++) trabajadores.get(i).printTrabajador();
-		for (int i = 0; i < tareas.size(); i++) tareas.get(i).printTarea();
+	public static void printState(ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {		
 		
+		System.out.println("************** IMPRESION DEL ESTADO **************");
+		
+		for (Herramienta herramienta: herramientas) {
+			System.out.println("HERRAMIENTA - Nombre: " + herramienta.getNombre() + ", trabajo: " + herramienta.getTrabajo()  + ", peso: " + herramienta.getPeso() + ", mejora: " + herramienta.getMejora()  + ", cantidad: " + herramienta.getCantidad()  + ", max: " + herramienta.getMaxCantidad());
+		}
+		
+		for (Trabajador trabajador: trabajadores) {
+			String herrActual;
+			if(trabajador.getHerramienta() == null) herrActual = "null";
+			else herrActual = trabajador.getHerramienta().getNombre();
+			System.out.println("TRABAJADOR - Nombre: " + trabajador.getNombre() + ", tiempo ocupado (mins): " + trabajador.getTiempoOcupado() + 
+					", tiempo total trabajado (horas): " + trabajador.getTiempoTotalTrabajado()/60 + ":" + trabajador.getTiempoTotalTrabajado()%60 +
+					", herramienta: " + herrActual + ", area: " + trabajador.getArea());
+		}
+		
+		for (Tarea tarea: tareas) {	
+			System.out.println("TAREA - tipo: " + tarea.getTipo() + ", area: " + tarea.getArea() + ", unidades: " + tarea.getUnidades());
+		}
+		System.out.println("");
 	}
 
 	/**
@@ -120,7 +135,18 @@ public class MainClass {
 	 * @param tareas
 	 */
 	public static void printMetrics(double executionTime, ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {
-		System.out.println("************** IMPRESION DE METRICAS **************");
+
+		for (Trabajador trabajador: trabajadores) {
+			String herrActual;
+			if(trabajador.getHerramienta() == null) herrActual = "null";
+			else herrActual = trabajador.getHerramienta().getNombre();
+			
+			System.out.println(trabajador.getNombre() + 
+					", ha estado trabajando: " + trabajador.getTiempoTotalTrabajado()/60+ " horas " + trabajador.getTiempoTotalTrabajado()%60 + " min"+
+					", herramienta: " + herrActual + ", area: " + trabajador.getArea());
+		}
+
+		System.out.println("");
 		System.out.println("La ejecución ha tardado: "+executionTime +" segundos");
 	}
 
