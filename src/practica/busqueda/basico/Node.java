@@ -59,6 +59,9 @@ public class Node {
 		ArrayList<Trabajador> trabajadores = new ArrayList<Trabajador>();
 		for (int i = 0; i < original.trabajadores.size(); i++) {
 			Trabajador trabajador = new Trabajador(original.trabajadores.get(i).getNombre(), original.trabajadores.get(i).getHabPodar(), original.trabajadores.get(i).getHabLimpiar(), original.trabajadores.get(i).getHabReparar());
+			trabajador.setArea(original.trabajadores.get(i).getArea());
+			trabajador.setTiempoTotalTrabajado(original.trabajadores.get(i).getTiempoTotalTrabajado());
+			trabajador.setTiempoOcupado(original.trabajadores.get(i).getTiempoOcupado());
 			trabajadores.add(trabajador);
 		}
 		this.trabajadores = trabajadores;
@@ -88,8 +91,6 @@ public class Node {
 	 * this.heuristica  - Resultado
 	 */
 	public void computeHeuristic(Node finalNode) {
-		// MODIFICAR para ajustarse a las necesidades del problema
-		
 		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
 		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)
 		
@@ -97,7 +98,6 @@ public class Node {
 		// escoger en cada caso la que esté más cerca (teniendo en cuenta el desplazamientro extra por la herramienta?)
 		
 		int tiempoTotal = 0;
-
 		// ArrayList<Tarea> tareasPendientes = new ArrayList<Tarea>();
 		int areasTotales = 7;
 		int areasPendientes = 0;
@@ -133,9 +133,7 @@ public class Node {
 	
 	// ----------------------------------------------------------------------------------------------------
 	
-	protected int computeHeuristic(int i, String[] visited, String origen) {
-		System.out.println(i);
-		
+	protected int computeHeuristic(int i, String[] visited, String origen) {		
 		int tiempoCamino = 0;
 		String origen1 = visited[i];
 		visited[i] = null;

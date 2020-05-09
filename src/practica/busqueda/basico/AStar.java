@@ -7,6 +7,7 @@ import practica.busqueda.basico.Node;
 import practica.busqueda.basico.OpenList;
 import practica.objetos.Herramienta;
 import practica.objetos.Tarea;
+import practica.objetos.Tiempo;
 import practica.objetos.Trabajador;
 
 /**
@@ -33,12 +34,13 @@ public class AStar {
 	 * @param currentNode - el nodo actual
 	 */
 	
-	private double ev;
 	private void addAdjacentNodes(Node currentNode) {
 		ArrayList<Trabajador> trabajadores  = currentNode.getTrabajadores();
 		ArrayList<Herramienta> herramientas = currentNode.getHerramientas();
 		ArrayList<Tarea> tareas             = currentNode.getTareas();
 
+		Double coste = 0.0;
+		//Tiempo tiempo;
 		boolean tareasTerminadas = true;
 		for(Tarea tareaOriginal : tareas) { // Un estado sucesor distinto por cada tarea pendiente
 			if(tareaOriginal.getUnidades() > 0) {
@@ -72,7 +74,9 @@ public class AStar {
 							}
 						}
 						trabajadorNuevo.tiempoTarea(tareaOriginal.getTipo(), tareaOriginal.getUnidades());
-						trabajadorNuevo.setArea(tareaOriginal.getArea());	
+						trabajadorNuevo.setArea(tareaOriginal.getArea());
+						coste = (double)trabajadorNuevo.getTiempoTotalTrabajado();
+						
 						System.out.println("Tiempo total: " + trabajadorNuevo.getNombre() + " " + trabajadorNuevo.getTiempoTotalTrabajado() + " " + trabajadorNuevo.getTiempoOcupado());
 					}
 					
@@ -90,11 +94,10 @@ public class AStar {
 
 				// ************** Creo el nodo sucesor con los arraylists que acabo de crear (estos definen el nuevo estado): **************
 				
-				Node sucesor = new Node(currentNode, herramientasNuevas, trabajadoresNuevos, tareasNuevas); 
-				// SUCESOR.setCoste(coste), sucesor.setHeuristic(...), sucesor.computeEvaluation() !!!!!!!!
-				// ---------------------------------------------------------------
-				this.ev ++; // para pruebas
-				sucesor.setEvaluation(ev); // para pruebas
+				Node sucesor = new Node(currentNode, herramientasNuevas, trabajadoresNuevos, tareasNuevas);
+				sucesor.setCoste(coste);
+				sucesor.computeHeuristic(this.goalNode);
+				sucesor.computeEvaluation(); 
 				// ---------------------------------------------------------------
 				currentNode.setNextNode(sucesor); 
 				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
@@ -161,7 +164,6 @@ public class AStar {
 		this.closedList = new ArrayList<Node>();
 		this.openList   = new OpenList();
 		this.openList.insertAtEvaluation(initialNode); // A�adimos a la lista de nodos sin explorar el nodo inicial
-		this.ev = 0; // PARA HACER PRUEBAS (me invento la evaluacion)
 	}
 
 
