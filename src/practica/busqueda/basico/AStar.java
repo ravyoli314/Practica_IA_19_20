@@ -93,7 +93,7 @@ public class AStar {
 				
 				Node sucesor = new Node(currentNode, herramientasNuevas, trabajadoresNuevos, tareasNuevas);
 				sucesor.setCoste(coste);
-				sucesor.computeHeuristic2(this.goalNode);
+				sucesor.computeHeuristic(this.goalNode);
 				sucesor.computeEvaluation(); 
 				// ---------------------------------------------------------------
 				sucesor.setParent(currentNode);
@@ -146,16 +146,17 @@ public class AStar {
 	}
 	*/
 	
-	public void printClosedList() {
-		int closedListNode = 0;
-		//System.out.println(" ClosedList : ");
-		
+	public void printTotalNode() {
+		int totalNode = 0;
+		int closedList= 0;
 		for(int i = 0; i< this.closedList.size(); i++) {
-			System.out.println("Nodo " + i + "; ");
-			closedList.get(i).printNodeData(1);
-			closedListNode++;
+			//System.out.println("Nodo " + i + "; ");
+			//closedList.get(i).printNodeData(1);
+			closedList++;
 		}
-		System.out.println("El número de nodos visitados es : " + closedListNode);
+		totalNode = closedList + openList.getSize();
+		System.out.println("El número total de nodos visitados es : " + totalNode + 
+				", han sido visitados " + closedList + " y no han sido visitados " + openList.getSize());
 	}
 	
 	public void printPath(Node currentNode) {

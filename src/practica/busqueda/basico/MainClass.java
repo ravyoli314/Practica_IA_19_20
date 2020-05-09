@@ -115,7 +115,7 @@ public class MainClass {
 	 */
 	public static void printMetrics(AStar aStar, double executionTime) {
 		System.out.println("************** IMPRESION DE METRICAS **************");
-		aStar.printClosedList();
+		aStar.printTotalNode();
 		//aStar.printOpenList();
 		System.out.println("La ejecución ha tardado: "+executionTime +" segundos");
 	}

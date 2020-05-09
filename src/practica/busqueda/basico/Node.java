@@ -92,36 +92,6 @@ public class Node {
 	 * this.heuristica  - Resultado
 	 */
 	
-
-	public void computeHeuristic2(Node finalNode) {
-		
-		int habPodar = 0;
-		int habLimpiar = 0;
-		int habReparar = 0;
-		
-		for (Trabajador trabajador : this.trabajadores) {
-			if (trabajador.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
-				habPodar = trabajador.getHabPodar();
-				habLimpiar = trabajador.getHabLimpiar();
-				habReparar = trabajador.getHabReparar();
-				break;
-			}
-		}	
-		
-		Tiempo tiempo = new Tiempo();
-		int tiempoTareas = 0;
-		for (int i = 0; i < this.tareas.size(); i++) {
-			if(this.tareas.get(i).getUnidades() > 0) {
-				tiempoTareas += tiempo.tiempoTarea(this.tareas.get(i).getTipo(), this.tareas.get(i).getUnidades(), habPodar, habLimpiar, habReparar);
-			}
-		}
-
-		this.heuristic = tiempoTareas;
-		
-	}
-	
-	
-// ORIGINAL (Antiguo) :---------------------------------	
 	public void computeHeuristic(Node finalNode) {
 		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
 		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)
