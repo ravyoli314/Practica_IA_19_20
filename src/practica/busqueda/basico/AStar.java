@@ -145,15 +145,9 @@ public class AStar {
 	*/
 	
 	public void printTotalNode() {
-		int totalNode = 0;
-		int closedList= 0;
-		for(int i = 0; i< this.closedList.size(); i++) {
-			closedList++;
-		}
-		totalNode = closedList + openList.getSize();
+		int totalNode = this.closedList.size() + openList.getSize();
 		System.out.println("El número total de nodos expandidos es : " + totalNode + 
-				", han sido visitados " + closedList + " y no han sido visitados " + openList.getSize());
-		System.out.print("Antonio ha completado las tareas en el siguiente orden: ");
+				", han sido visitados " + this.closedList.size() + " y no han sido visitados " + openList.getSize());
 		printPath(goalNode);
 	}
 	

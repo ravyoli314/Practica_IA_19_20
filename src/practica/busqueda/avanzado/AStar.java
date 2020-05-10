@@ -40,9 +40,9 @@ public class AStar {
 		Double coste = 0.0;
 		boolean tareasTerminadas = true;
 		
-		// (y si) solo muevo al trabajador que termine antes ?! -------------------------------
+		// solo muevo al/los trabajador que termine antes-------------------------------
 		
-		int tiempoOcupado = 0;
+		int tiempoOcupado = 0; //almaceno el tiempo de ocupación del trabajador que termine antes
 
 		for(int i = 0; i < trabajadores.size(); i++) {
 			if (i == 0) tiempoOcupado = trabajadores.get(i).getTiempoOcupado();
@@ -50,9 +50,6 @@ public class AStar {
 				if(trabajadores.get(i).getTiempoOcupado() < tiempoOcupado) tiempoOcupado = trabajadores.get(i).getTiempoOcupado();
 				else continue;
 			}
-		}
-		for (Trabajador trabajador : trabajadores) { // actualizo el tiempo, dejando libre al/los trabajador que termine primero
-			trabajador.setTiempoOcupado(trabajador.getTiempoOcupado() - tiempoOcupado);
 		}
 		
 		for(Tarea tareaOriginal : tareas) { // Un estado sucesor distinto por cada tarea pendiente
@@ -69,19 +66,22 @@ public class AStar {
 					herramientasNuevas.add(herramientaNueva);
 				}
 
+				boolean tareaAsignada = false;
 				ArrayList<Trabajador> trabajadoresNuevos = new ArrayList<Trabajador>();
 				for (Trabajador trabajador : trabajadores) {
 					Trabajador trabajadorNuevo = new Trabajador(trabajador.getNombre(), trabajador.getHabPodar(), trabajador.getHabLimpiar(), trabajador.getHabReparar());
 					trabajadorNuevo.setArea(trabajador.getArea());
 					trabajadorNuevo.setTiempoTotalTrabajado(trabajador.getTiempoTotalTrabajado());
-					trabajadorNuevo.setTiempoOcupado(trabajador.getTiempoOcupado());
+					trabajadorNuevo.setTiempoOcupado(trabajador.getTiempoOcupado() - tiempoOcupado); // actualizo el tiempo, dejando libre al/los trabajador que termine primero
+					trabajadorNuevo.setHerramienta(trabajador.getHerramienta());
 
-					if (trabajadorNuevo.getTiempoOcupado() == 0) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
+					if (trabajadorNuevo.getTiempoOcupado() == 0 && !tareaAsignada) {
+						tareaAsignada = true;
 						if(!trabajadorNuevo.herramientaCorrecta(tareaOriginal.getTipo())) { // si no tiene la herramienta correcta, la coge del almacen
 							for (Herramienta herramienta : herramientasNuevas) {
 								if((trabajadorNuevo.getHerramienta() != null) && (trabajadorNuevo.getHerramienta().getNombre().equals(herramienta.getNombre())))
 									herramienta.setCantidad(herramienta.getCantidad() +1); // el trabajador suelta la herramienta
-								if(herramienta.getTrabajo().equals(tareaOriginal.getTipo())) { // && herramienta.getCantidad() > 0
+								if(herramienta.getTrabajo().equals(tareaOriginal.getTipo()) && herramienta.getCantidad() > 0) { // && herramienta.getCantidad() > 0
 									herramienta.setCantidad(herramienta.getCantidad() - 1);
 									trabajadorNuevo.cogerHerramienta(herramienta);
 									break;
@@ -99,7 +99,7 @@ public class AStar {
 				for (Tarea tarea: tareas) {
 					Tarea tareaNueva = new Tarea(tarea.getTipo(), tarea.getArea(), tarea.getUnidades());
 					if(tareaNueva.getTipo().equals(tareaOriginal.getTipo()) && tareaNueva.getArea().equals(tareaOriginal.getArea())) {
-						tareaNueva.setUnidades(0); // El estado nuevo (nodo sucesor) parte de la tarea que acaba de completar Antonio en este caso (ya no está pendiente)
+						tareaNueva.setUnidades(0); // El estado nuevo (nodo sucesor) parte de la tarea que se acaba de completar
 					}
 					tareasNuevas.add(tareaNueva);
 				}
@@ -109,16 +109,13 @@ public class AStar {
 				Node sucesor = new Node(currentNode, herramientasNuevas, trabajadoresNuevos, tareasNuevas);
 				sucesor.setCoste(coste);
 				sucesor.computeHeuristic(this.goalNode);
-				sucesor.computeEvaluation(); 
-				// ---------------------------------------------------------------
-				sucesor.setParent(currentNode);
+				sucesor.computeEvaluation();
 				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
 		} // for	
 		
 		if(tareasTerminadas) { // Si no quedan tareas pendientes, el único nodo sucesor es el nodo meta (que tendrá los valores reseteados)
 			Node sucesor = new Node(goalNode);
-			// la heurística debería dar 0
 			sucesor.setParent(currentNode);
 			openList.insertAtEvaluation(sucesor);
 		}
@@ -154,38 +151,29 @@ public class AStar {
 	}
 
 	public void printTotalNode() {
-		int totalNode = 0;
-		int closedList= 0;
-		for(int i = 0; i< this.closedList.size(); i++) {
-			//System.out.println("Nodo " + i + "; ");
-			//closedList.get(i).printNodeData(1);
-			closedList++;
-		}
-		totalNode = closedList + openList.getSize();
+		int totalNode = this.closedList.size() + openList.getSize();
 		System.out.println("El número total de nodos expandidos es : " + totalNode + 
-				", han sido visitados " + closedList + " y no han sido visitados " + openList.getSize());
-		System.out.print("Antonio ha completado las tareas en el siguiente orden: ");
-		printPath(goalNode);
+				", han sido visitados " + this.closedList.size() + " y no han sido visitados " + openList.getSize());
+		//printPath(goalNode);
 	}
 	
 	public void printPath(Node currentNode) {
-		String ordenTareas = "";
+		System.out.println("");
 		List<Node> path = getPath(currentNode);
+		int i = 0;
 		for (Node node:path) {	
-			ArrayList<Trabajador> trabajadores= node.getTrabajadores();
-			for (Trabajador trabajador : trabajadores) {
-				if (trabajador.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
-					String herramienta = "";
-					if(trabajador.getHerramienta() == null) {
-						herramienta = "sin herramienta";
-					} else herramienta = trabajador.getHerramienta().getTrabajo();
-					ordenTareas += trabajador.getArea() + " " + herramienta + ", ";
-					break;
-				}
-			}
-		}
+			System.out.println("Nodo " + i + " ----------------------------------");
+			for (Trabajador trabajador : node.getTrabajadores()) {
+				String herramienta = "";
+				if(trabajador.getHerramienta() == null) {
+					herramienta = "sin herramienta";
+				} else herramienta = trabajador.getHerramienta().getTrabajo();
 
-		System.out.println(ordenTareas);		
+				System.out.println(trabajador.getNombre() + " " + trabajador.getTiempoOcupado() + " min, total: " + trabajador.getTiempoTotalTrabajado() + " min " + trabajador.getArea() + " " + herramienta);
+			}
+			i++;
+		}
+	
 	}
 
 	/**

@@ -35,7 +35,6 @@ public class Node {
 		this.herramientas = herramientas;
 		this.trabajadores = trabajadores;
 		this.tareas       = tareas;
-		// A�adir m�s variables si se desea
 	}
 
 	/**
@@ -43,16 +42,13 @@ public class Node {
 	 * Constructor auxiliar para la implementaci�n del algoritmo. Genera una copia de un nodo para introducirla en la OpenList
 	 */ 
 	public Node(Node original) {
-		// Incluir todas las variables del nodo
 		this.cost        = original.cost;
 		this.heuristic   = original.heuristic;
 		this.evaluation   = original.evaluation;
 		this.parent       = original.parent;
 		this.nextNodeList = original.nextNodeList;
-		// A�adir m�s variables si se desea
 
 		// Se copian los objetos de los ArrayList a uno nuevo de este Nodo
-		// Si se necesita a�adir valores variables, como un ID, utilizar setters
 		ArrayList<Trabajador> trabajadores = new ArrayList<Trabajador>();
 		for (int i = 0; i < original.trabajadores.size(); i++) {
 			Trabajador trabajador = new Trabajador(original.trabajadores.get(i).getNombre(), original.trabajadores.get(i).getHabPodar(), original.trabajadores.get(i).getHabLimpiar(), original.trabajadores.get(i).getHabReparar());
@@ -92,7 +88,9 @@ public class Node {
 	 */
 	public void computeHeuristic(Node finalNode) {
 
-		// calcular la heuristica ?? Puedo hacer la media de las unidades de cada tarea y habilidades
+		// Heurística: media de las unidades de cada tarea y habilidades de los trabajadores 
+		// no tengo en cuenta el trayecto ni las herramientas
+		
 		int habPodar = 0;
 		int habLimpiar = 0;
 		int habReparar = 0;
@@ -101,7 +99,6 @@ public class Node {
 		int unidadesPodar = 0;
 		int unidadesReparar = 0;
 		
-		//OJO NO TENGO EN CUENTA LA MEJORA, PESO, NI TRAYECTO (y si no es admisible???)
 		for(Tarea tarea : this.tareas) {
 			if(tarea.getUnidades() > 0) {
 				switch(tarea.getTipo()) {
@@ -215,33 +212,39 @@ public class Node {
 		
 		if(printDebug == 1) {
 			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
-			int tareasPendientes = 0;
+			int numPendientes = 0;
 			for (Tarea tarea: this.tareas) {
 				if(tarea.getUnidades() > 0)
-					tareasPendientes++;
+					numPendientes++;
 			}
-			System.out.println("Tareas pendientes: " + tareasPendientes + " ");
+			System.out.println(numPendientes + " tareas pendientes.");
 			
+			int numTrabajado = 0;
 			for (Trabajador trabajador: this.trabajadores) {
-				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.println("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
-					break; }
+				numTrabajado += trabajador.getTiempoTotalTrabajado();
 			}
+			System.out.println("Tiempo total de trabajo conjunto: " + numTrabajado);
+
 		}
 		
 		else if(printDebug == 2) {
 			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
-			System.out.println("Tareas pendientes: ");
+			String tareasPendientes = "";
+			int numPendientes = 0;
 			for (Tarea tarea: this.tareas) {
 				if(tarea.getUnidades() > 0)
-					System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+					numPendientes ++;
+					tareasPendientes += tarea.getTipo() + " " + tarea.getArea() + ", ";
 			}
-			System.out.println("");
+			System.out.println(numPendientes + " tareas pendientes: " + tareasPendientes);
 			
-			for (Trabajador trabajador: this.trabajadores) {
-				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.print("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
-					break; }
+			for (Trabajador trabajador : this.trabajadores) {
+				String herramienta = "";
+				if(trabajador.getHerramienta() == null) {
+					herramienta = "sin herramienta";
+				} else herramienta = trabajador.getHerramienta().getTrabajo();
+
+				System.out.println(trabajador.getNombre() + "-> Tarea: " + herramienta + " " + trabajador.getArea() +  ", tiempo restante: " + trabajador.getTiempoOcupado() + " min, tiempo total trabajado: " + trabajador.getTiempoTotalTrabajado() + " min ");
 			}
 			
 		}
