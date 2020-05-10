@@ -135,12 +135,6 @@ public class AStar {
 		return tiempo;
 	}
 	
-	/*
-	public void printOpenList() {
-		System.out.println("OpenListTotal : " + this.openList.getSize());
-	}
-	*/
-	
 	public void printTotalNode() {
 		int totalNode = this.closedList.size() + openList.getSize();
 		System.out.println("El número total de nodos expandidos es : " + totalNode + 
@@ -159,7 +153,7 @@ public class AStar {
 					if(trabajador.getHerramienta() == null) {
 						herramienta = "sin herramienta";
 					} else herramienta = trabajador.getHerramienta().getTrabajo();
-					ordenTareas += trabajador.getArea() + " " + herramienta + ", ";
+					ordenTareas += herramienta + " " + trabajador.getArea() + ", ";
 					break;
 				}
 			}

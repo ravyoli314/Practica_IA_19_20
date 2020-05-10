@@ -62,7 +62,7 @@ public class Node {
 		ArrayList<Herramienta> herramientas = new ArrayList<Herramienta>();
 		for (int i = 0; i < original.herramientas.size(); i++) {
 			Herramienta herramienta = new Herramienta(original.herramientas.get(i).getNombre(), original.herramientas.get(i).getTrabajo(), original.herramientas.get(i).getPeso(), original.herramientas.get(i).getMejora(), original.herramientas.get(i).getCantidad());
-			herramientas.add(herramienta); // en el problema básico no tengo en cuenta la mejora ni el peso
+			herramientas.add(herramienta); // en el problema básico no tengo en cuenta la mejora, el peso ni la cantidad
 		}
 		this.herramientas = herramientas;
 		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
@@ -208,39 +208,21 @@ public class Node {
 				if(!check)
 					break;
 				
-				if(trabajador1.getNombre().equals(trabajador2.getNombre())) {
+				if(trabajador1.getNombre().equals(trabajador2.getNombre())) { // mismo nombre, tiempo de trabajo, area y herramienta
 					if((trabajador1.getTiempoTotalTrabajado() != trabajador2.getTiempoTotalTrabajado()) || (trabajador1.getTiempoOcupado() != trabajador2.getTiempoOcupado()) || 
 							!(trabajador1.getArea().equals(trabajador2.getArea()))) {
-						check = false;
+						if ((trabajador1.getHerramienta() != null && trabajador2.herramientaCorrecta(trabajador1.getHerramienta().getTrabajo())) || 
+								(trabajador2.getHerramienta() != null && trabajador1.herramientaCorrecta(trabajador2.getHerramienta().getTrabajo()))) {
+							check = false;
+						} 
 					}
-					/*
-					else if ((trabajador1.getHerramienta() != null && trabajador2.herramientaCorrecta(trabajador1.getHerramienta().getTrabajo())) || 
-							(trabajador2.getHerramienta() != null && trabajador1.herramientaCorrecta(trabajador2.getHerramienta().getTrabajo()))) {
-						check = false;
-					} */
 					break;
 				}
 			}
 			j++;
 		}
-		/*
-		int k = 0;
-		while((check == true) && k < this.herramientas.size()) {
-			Herramienta herramienta1 = this.herramientas.get(k);
-			for (Herramienta herramienta2: this.herramientas) {
-				if(!check)
-					break;
-				
-				if(herramienta1.getNombre().equals(herramienta2.getNombre()) && (herramienta1.getTrabajo().equals(herramienta2.getTrabajo()))) {
-					if(herramienta1.getCantidad() != herramienta2.getCantidad()) {
-						check = false;
-					}
-					break;
-				}
-			}
-			k ++;
-		}
-		*/
+
+		// en el problema básico no tengo en cuenta la cantidad de herramientas (ni la mejora/peso)
 		
 		return check;
 	}
@@ -272,16 +254,25 @@ public class Node {
 		
 		else if(printDebug == 2) {
 			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
+			String tareasPendientes = "";
+			int numPendientes = 0;
 			for (Tarea tarea: this.tareas) {
 				if(tarea.getUnidades() > 0)
-					System.out.print("Tareas pendientes: " + tarea.getTipo() + " " + tarea.getArea() + ", ");
+					numPendientes ++;
+					tareasPendientes += tarea.getTipo() + " " + tarea.getArea() + ", ";
 			}
-			System.out.println("");
-			
+			System.out.println(numPendientes + " tareas pendientes: " + tareasPendientes);
+		
 			for (Trabajador trabajador: this.trabajadores) {
 				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.print("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado() + " min.");
-					break; }
+					String herramienta = "";
+					if(trabajador.getHerramienta() == null) {
+						herramienta = "sin herramienta";
+					} else herramienta = trabajador.getHerramienta().getTrabajo();
+
+					System.out.println(trabajador.getNombre() + "-> Tarea: " + herramienta + " " + trabajador.getArea() +  ", tiempo restante: " + trabajador.getTiempoOcupado() + " min, tiempo total trabajado: " + trabajador.getTiempoTotalTrabajado() + " min ");
+					break; 
+					}
 			}
 			
 		}
