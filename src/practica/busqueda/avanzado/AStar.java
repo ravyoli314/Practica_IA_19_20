@@ -154,27 +154,8 @@ public class AStar {
 		int totalNode = this.closedList.size() + openList.getSize();
 		System.out.println("El número total de nodos expandidos es : " + totalNode + 
 				", han sido visitados " + this.closedList.size() + " y no han sido visitados " + openList.getSize());
-		//printPath(goalNode);
 	}
 	
-	public void printPath(Node currentNode) {
-		System.out.println("");
-		List<Node> path = getPath(currentNode);
-		int i = 0;
-		for (Node node:path) {	
-			System.out.println("Nodo " + i + " ----------------------------------");
-			for (Trabajador trabajador : node.getTrabajadores()) {
-				String herramienta = "";
-				if(trabajador.getHerramienta() == null) {
-					herramienta = "sin herramienta";
-				} else herramienta = trabajador.getHerramienta().getTrabajo();
-
-				System.out.println(trabajador.getNombre() + " " + trabajador.getTiempoOcupado() + " min, total: " + trabajador.getTiempoTotalTrabajado() + " min " + trabajador.getArea() + " " + herramienta);
-			}
-			i++;
-		}
-	
-	}
 
 	/**
 	 * Constructor del algoritmo, obtiene el nodo de inicio y el nodo meta
