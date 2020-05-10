@@ -169,11 +169,10 @@ public class Node {
 							!(trabajador1.getArea().equals(trabajador2.getArea()))) {
 						check = false;
 					}
-					/*
 					else if ((trabajador1.getHerramienta() != null && trabajador2.herramientaCorrecta(trabajador1.getHerramienta().getTrabajo())) || 
 							(trabajador2.getHerramienta() != null && trabajador1.herramientaCorrecta(trabajador2.getHerramienta().getTrabajo()))) {
 						check = false;
-					} */
+					}
 					break;
 				}
 			}
