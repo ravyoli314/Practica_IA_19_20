@@ -178,7 +178,7 @@ public class Node {
 			}
 			j++;
 		}
-		/*
+		
 		int k = 0;
 		while((check == true) && k < this.herramientas.size()) {
 			Herramienta herramienta1 = this.herramientas.get(k);
@@ -195,7 +195,6 @@ public class Node {
 			}
 			k ++;
 		}
-		*/
 		
 		return check;
 	}
