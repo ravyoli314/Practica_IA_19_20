@@ -25,6 +25,8 @@ public class AStar {
 	private Node initialNode;										// Nodo inicial del problema
 	private Node goalNode;											// Nodo meta del problema
 	private boolean findGoal;										// Se ha encontrado la meta
+	
+	private ArrayList<Tarea> tareasPoda = new ArrayList<Tarea>();
 
 	/**
 	 * Insertamos en la lista de nodos abiertos los nodos seg�n las acciones que se pueden realizar en este instante
@@ -97,7 +99,15 @@ public class AStar {
 
 				ArrayList<Tarea> tareasNuevas = new ArrayList<Tarea>();
 				for (Tarea tarea: tareas) {
-					Tarea tareaNueva = new Tarea(tarea.getTipo(), tarea.getArea(), tarea.getUnidades());
+					Tarea tareaNueva = new Tarea(tarea.getTipo(), tarea.getArea(), tarea.getUnidades()); // Parto de que tareaOriginal tiene 0 uds
+					if(tareaOriginal.getTipo().equals("podar") && tareaNueva.getTipo().equals("limpiar") && tareaNueva.getArea().equals(tareaOriginal.getArea())) { // por cada unidad de poda añado una de limpieza
+						for(Tarea poda : tareasPoda) {
+							if(poda.getArea().equals(tareaOriginal.getArea())) {
+								tareaNueva.setUnidades(tareaNueva.getUnidades() + poda.getUnidades());
+								break; 
+							}
+						}
+					}
 					if(tareaNueva.getTipo().equals(tareaOriginal.getTipo()) && tareaNueva.getArea().equals(tareaOriginal.getArea())) {
 						tareaNueva.setUnidades(0); // El estado nuevo (nodo sucesor) parte de la tarea que se acaba de completar
 					}
@@ -179,6 +189,11 @@ public class AStar {
 		this.closedList = new ArrayList<Node>();
 		this.openList   = new OpenList();
 		this.openList.insertAtEvaluation(initialNode); // A�adimos a la lista de nodos sin explorar el nodo inicial
+		for (Tarea tarea: this.initialNode.getTareas()) {
+			if(tarea.getTipo().equals("podar")) { // Conservo las unidades de poda
+				Tarea tareaNueva = new Tarea(tarea.getTipo(), tarea.getArea(), tarea.getUnidades());
+				this.tareasPoda.add(tareaNueva);
+			}}
 	}
 
 
