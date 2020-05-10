@@ -117,7 +117,7 @@ public class MainClass {
 			String herrActual;
 			if(trabajador.getHerramienta() == null) herrActual = "null";
 			else herrActual = trabajador.getHerramienta().getNombre();
-			System.out.println("TRABAJADOR - Nombre: " + trabajador.getNombre() + ", tiempo ocupado (mins): " + trabajador.getTiempoOcupado() + 
+			System.out.println("TRABAJADOR - Nombre: " + trabajador.getNombre() +  ", tiempo ocupado (mins): " + trabajador.getTiempoOcupado() + 
 					", tiempo total trabajado (horas): " + trabajador.getTiempoTotalTrabajado()/60 + ":" + trabajador.getTiempoTotalTrabajado()%60 +
 					", herramienta: " + herrActual + ", area: " + trabajador.getArea());
 		}
@@ -142,7 +142,7 @@ public class MainClass {
 			else herrActual = trabajador.getHerramienta().getNombre();
 			
 			System.out.println(trabajador.getNombre() + 
-					", ha estado trabajando: " + trabajador.getTiempoTotalTrabajado()/60+ " horas " + trabajador.getTiempoTotalTrabajado()%60 + " min"+
+					", ha estado trabajando: " + trabajador.getTiempoTotalTrabajado() + " min ("+ trabajador.getTiempoTotalTrabajado()/60+ ":" + trabajador.getTiempoTotalTrabajado()%60 + " h)"+
 					", herramienta: " + herrActual + ", area: " + trabajador.getArea());
 		}
 
