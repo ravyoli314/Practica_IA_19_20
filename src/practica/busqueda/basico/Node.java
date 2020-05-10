@@ -146,7 +146,6 @@ public class Node {
 		this.heuristic = tiempoCamino + tiempoTareas;
 	}
 
-		
 	protected int computeHeuristic(int i, String[] visited, String origen) {		
 		int tiempoCamino = 0;
 		String origen1 = visited[i];
@@ -279,23 +278,22 @@ public class Node {
 			
 			for (Trabajador trabajador: this.trabajadores) {
 				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.println("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
+					System.out.println("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado() + " min.");
 					break; }
 			}
 		}
 		
 		else if(printDebug == 2) {
 			System.out.println("f(n): " + this.evaluation + " h(n): " + this.heuristic + " g(n): " + this.cost);
-			System.out.println("Tareas pendientes: ");
 			for (Tarea tarea: this.tareas) {
 				if(tarea.getUnidades() > 0)
-					System.out.print(tarea.getTipo() + " " + tarea.getArea() + ", ");
+					System.out.print("Tareas pendientes: " + tarea.getTipo() + " " + tarea.getArea() + ", ");
 			}
 			System.out.println("");
 			
 			for (Trabajador trabajador: this.trabajadores) {
 				if(trabajador.getNombre().equals("Antonio")) {
-					System.out.print("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado());
+					System.out.print("Tiempo total trabajado " + trabajador.getTiempoTotalTrabajado() + " min.");
 					break; }
 			}
 			

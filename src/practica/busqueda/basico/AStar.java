@@ -148,8 +148,6 @@ public class AStar {
 		int totalNode = 0;
 		int closedList= 0;
 		for(int i = 0; i< this.closedList.size(); i++) {
-			//System.out.println("Nodo " + i + "; ");
-			//closedList.get(i).printNodeData(1);
 			closedList++;
 		}
 		totalNode = closedList + openList.getSize();
