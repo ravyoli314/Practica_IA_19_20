@@ -31,31 +31,24 @@ public class Node {
 	 * Constructor para introducir un nuevo nodo en el algoritmo A estrella
 	 */
 	public Node(Node parentNode, ArrayList<Herramienta> herramientas, ArrayList<Trabajador> trabajadores, ArrayList<Tarea> tareas) {	
-		// CREAR ARRAYLISTS NUEVOS PARA TRABAJADORES, HERRAMIENTAS Y TAREAS Y COPIAR EN ELLOS LOS OBJETOS QUE NOS PASAN		
 		this.parent       = parentNode;  // padre en el �rbol A*
 		this.herramientas = herramientas;
 		this.trabajadores = trabajadores;
 		this.tareas       = tareas;
-		// A�adir m�s variables si se desea
-		
-		// calcular funcion de evaluacion -> pasamos la heuristica (calcular) y el coste
-	}
+		}
 
 	/**
 	 * MODIFICAR
 	 * Constructor auxiliar para la implementaci�n del algoritmo. Genera una copia de un nodo para introducirla en la OpenList
 	 */ 
 	public Node(Node original) {
-		// Incluir todas las variables del nodo
 		this.cost        = original.cost;
 		this.heuristic   = original.heuristic;
 		this.evaluation   = original.evaluation;
 		this.parent       = original.parent;
 		this.nextNodeList = original.nextNodeList;
-		// A�adir m�s variables si se desea
 
 		// Se copian los objetos de los ArrayList a uno nuevo de este Nodo
-		// Si se necesita a�adir valores variables, como un ID, utilizar setters
 		ArrayList<Trabajador> trabajadores = new ArrayList<Trabajador>();
 		for (int i = 0; i < original.trabajadores.size(); i++) {
 			Trabajador trabajador = new Trabajador(original.trabajadores.get(i).getNombre(), original.trabajadores.get(i).getHabPodar(), original.trabajadores.get(i).getHabLimpiar(), original.trabajadores.get(i).getHabReparar());
@@ -69,7 +62,7 @@ public class Node {
 		ArrayList<Herramienta> herramientas = new ArrayList<Herramienta>();
 		for (int i = 0; i < original.herramientas.size(); i++) {
 			Herramienta herramienta = new Herramienta(original.herramientas.get(i).getNombre(), original.herramientas.get(i).getTrabajo(), original.herramientas.get(i).getPeso(), original.herramientas.get(i).getMejora(), original.herramientas.get(i).getCantidad());
-			herramientas.add(herramienta);
+			herramientas.add(herramienta); // en el problema básico no tengo en cuenta la mejora ni el peso
 		}
 		this.herramientas = herramientas;
 		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
@@ -93,12 +86,9 @@ public class Node {
 	 */
 	
 	public void computeHeuristic(Node finalNode) {
-		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén)
+		//HEURÍSTICA: tiempo estimado en recorrer todas las tareas pendientes (sin tener que ir al almacén) + tiempo de trabajo restante
 		// COSTE: coste real que se ha tardado en ir del nodo inicial hasta ese (contando ir a por la herramienta)
 		
-		// recorrerse todas las tareas pendientes que deberían estar completas acorde con el nodo final 
-		// escoger en cada caso la que esté más cerca (teniendo en cuenta el desplazamientro extra por la herramienta?)
-	
 		int habPodar = 0;
 		int habLimpiar = 0;
 		int habReparar = 0;
@@ -181,10 +171,7 @@ public class Node {
 			arrayAdjacents[i] = dynamicAdj.get(i);
 		}
 		return arrayAdjacents;
-	}
-	
-	// ----------------------------------------------------------------------------------------------------
-	
+	}	
 	
 	/**
 	 * Comprobaci�n de que la informaci�n de un nodo es equivalente a la de otro nodo

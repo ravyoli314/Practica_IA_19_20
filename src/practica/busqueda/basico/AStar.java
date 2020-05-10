@@ -59,9 +59,8 @@ public class AStar {
 					trabajadorNuevo.setArea(trabajador.getArea());
 					trabajadorNuevo.setTiempoTotalTrabajado(trabajador.getTiempoTotalTrabajado());
 					trabajadorNuevo.setTiempoOcupado(trabajador.getTiempoOcupado());
-					
-					// set herramienta
-					
+					trabajadorNuevo.setHerramienta(trabajador.getHerramienta());
+
 					if (trabajadorNuevo.getNombre().equals("Antonio")) { // antonio ejecuta la tarea = se mueve a su area + tiempoOcupado
 						trabajadorNuevo.setTiempoOcupado(0); // "Actualizo" el tiempo y pongo a Antonio libre para realizar la siguiente tarea (la de este estado sucesor)
 						if(!trabajadorNuevo.herramientaCorrecta(tareaOriginal.getTipo())) { // si no tiene la herramienta correcta, la coge del almacen
@@ -95,8 +94,6 @@ public class AStar {
 				sucesor.setCoste(coste);
 				sucesor.computeHeuristic(this.goalNode);
 				sucesor.computeEvaluation(); 
-				// ---------------------------------------------------------------
-				sucesor.setParent(currentNode);
 				openList.insertAtEvaluation(sucesor); // lo añado a la lista de nodos por explorar (ordenada segun la funcion de evaluacion)
 			} // if tarea pendiente
 		} // for	
@@ -168,7 +165,7 @@ public class AStar {
 			}
 		}
 
-		System.out.println(ordenTareas);		
+		System.out.println("El orden en que Antonio ha completado las tareas es: " + ordenTareas);		
 	}
 
 	

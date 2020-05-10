@@ -74,7 +74,7 @@ public class MainClass {
 		Node initialNode = new Node(null, herramientas, trabajadores, tareas);
 		Node goalNode    = new Node(initialNode);
 		for (Tarea tarea : goalNode.getTareas()) {
-			tarea.setUnidades(0);
+			tarea.setUnidades(0); // el estado final no tiene tareas pendientes 
 		}
 		AStar aStar = new AStar(printDebug, initialNode, goalNode); // Se inicializa el A-Estrella
 		

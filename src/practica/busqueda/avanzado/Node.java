@@ -156,7 +156,6 @@ public class Node {
 			i++;
 		}
 		
-		
 		int j = 0;
 		while((check == true) && j < this.trabajadores.size()) {
 			Trabajador trabajador1 = this.trabajadores.get(j);
